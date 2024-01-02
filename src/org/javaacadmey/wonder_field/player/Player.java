@@ -11,46 +11,40 @@ public class Player {
         this.city = city;
     }
 
-    // игрок ходит
-    public PlayerAnswer move() throws Exception {
-        System.out.println("Если хотите букву, нажмите 'б' и Enter, если хотите слово, нажмите 'с' и Enter");
-
-        while (true) {
-            String choice = Game.scanner.nextLine().trim().toLowerCase();
-
-            switch (choice) {
-                case "б":
-                    return new PlayerAnswer(false, sayLetter());
-                case "с":
-                    return new PlayerAnswer(true, sayWord());
-                default:
-                    System.out.println("Некорректное значение, введите 'б' или 'с'");
-            }
-        }
-    }
-
     // игрок кричит букву
-    private String sayLetter() throws Exception {
-        String letter = Game.scanner.nextLine();
-        while (true) {
-            if (letter.length() == 1 && isRussianLetter(letter.charAt(0))) {
-                System.out.printf("Игрок %s: буква %s", name, letter.toUpperCase());
-                return letter.substring(0);
-            } else {
-                throw new Exception("Ошибка! это не русская буква, введите русскую букву");
+    public char sayLetter() throws Exception {
+        char letter;
+        do {
+            String input = Game.scanner.next().toLowerCase();
+            if (input.length() == 1 && Character.isLetter(input.charAt(0)) && Character.UnicodeBlock.CYRILLIC.equals(Character.UnicodeBlock.of(input.charAt(0)))) {
+                letter = Character.toUpperCase(input.charAt(0));
+                System.out.println("Игрок " + name + ": буква " + letter);
+                return letter;
             }
-        }
+            System.out.println("Ошибка! Введите русскую букву.");
+        } while (true);
     }
 
     // игрок кричит слово
-    private String sayWord() {
+    public String sayWord() {
         String word = Game.scanner.nextLine();
-        System.out.printf("Игрок %s: слово %s", name, word);
+        System.out.println("Игрок " + name + ": слово " + word);
         return word;
     }
 
-    // проверка на русский алфавит
-    private static boolean isRussianLetter(char letter) {
-        return Character.UnicodeBlock.CYRILLIC.equals(Character.UnicodeBlock.of(letter));
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

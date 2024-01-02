@@ -8,22 +8,28 @@ public class Tableau {
     private static final String SYMBOL_OF_UNSOLVED_LETTERS = " _ ";
 
     // инициализация табло
-    public void init(String correctAnswer) {
-        if (checkAttributes()) {
-            this.correctAnswer = correctAnswer.toUpperCase();
-            this.tableauLetters = new String[correctAnswer.length()];
+    public Tableau(String correctAnswer) {
+        this.correctAnswer = correctAnswer.toUpperCase();
+        init();
+    }
+
+    public void init() {
+        if (attributesNotEmpty()) {
+            tableauLetters = new String[correctAnswer.length()];
             Arrays.fill(tableauLetters, SYMBOL_OF_UNSOLVED_LETTERS);
         }
     }
 
     // отображает в консоли все буквы (отгаданные и неотгаданных)
     public void printLetters() {
-        System.out.println(Arrays.toString(tableauLetters));
+        if (attributesNotEmpty()) {
+            System.out.println(Arrays.toString(tableauLetters));
+        }
     }
 
     // открывает букву(ы)
     public void openLetter(char letter) {
-        if (checkAttributes()) {
+        if (attributesNotEmpty()) {
             letter = Character.toUpperCase(letter);
 
             for (int i = 0; i < correctAnswer.length(); i++) {
@@ -36,27 +42,29 @@ public class Tableau {
 
     // открывает слово целиком.
     public void openWord(String word) {
-        if (word.equals(correctAnswer)) {
-            tableauLetters = word.toUpperCase().split("");
+        if (attributesNotEmpty()) {
+            word = word.toUpperCase();
+
+            if (correctAnswer.equals(word)) {
+                tableauLetters = correctAnswer.split("");
+            }
         }
     }
 
     // если есть неразгаданные буквы - вернет истину, иначе ложь.
     public boolean containsUnknownLetters() {
-        for (int i = 0; i < tableauLetters.length; i++) {
-            if (tableauLetters[i].equals(SYMBOL_OF_UNSOLVED_LETTERS)) {
-                return true;
+        if (attributesNotEmpty()) {
+            for (String letter : tableauLetters) {
+                if (SYMBOL_OF_UNSOLVED_LETTERS.equals(letter)) {
+                    return true;
+                }
             }
         }
         return false;
     }
 
     // метод, проверяющий что атрибуты не пусты
-    private boolean checkAttributes() {
-        if (correctAnswer == null || tableauLetters == null) {
-            System.out.println("Ошибка: Табло не инициализировано.");
-            return false;
-        }
-        return true;
+    public boolean attributesNotEmpty() {
+        return correctAnswer != null && tableauLetters != null;
     }
 }

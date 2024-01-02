@@ -1,20 +1,15 @@
 package org.javaacadmey.wonder_field.player;
 
 public class PlayerAnswer {
-    private boolean isWord;
+    private char answerType; // 'б' - буква, 'с' - слово
     private String answer;
 
-    public PlayerAnswer(boolean isWord, String answer) {
-        this.isWord = isWord;
-        this.answer = answer;
+    public char getAnswerType() {
+        return answerType;
     }
 
-    public boolean getIsWord() {
-        return isWord;
-    }
-
-    public void setIsWord(boolean word) {
-        isWord = word;
+    public void setAnswerType(char answerType) {
+        this.answerType = answerType;
     }
 
     public String getAnswer() {
