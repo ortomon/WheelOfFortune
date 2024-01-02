@@ -16,6 +16,7 @@ public class Game {
     public static final Scanner scanner = new Scanner(System.in);
 
     private GameQuestion[] gameQuestions;
+    private Tableau tableau;
 
     // Инициализация вопросов и ответов (реализация с уже созданными вопросами и ответами)
     public void initGame() {
@@ -41,9 +42,6 @@ public class Game {
 
 
 
-
-
-    private Tableau tableau;
     private Yakubovich yakubovich = new Yakubovich();
 
 //    public void init() {

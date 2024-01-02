@@ -1,24 +1,24 @@
 package org.javaacadmey.wonder_field.gamequestion.components;
 
 public class Question {
-    private String question;
+    private String text;
 
     public Question(String question) {
-        this.question = question;
+        this.text = question;
     }
 
-    public String getQuestion() {
-        return question;
+    public String getText() {
+        return text;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
     public String toString() {
         return "Question{" +
-                "question='" + question + '\'' +
+                "question='" + text + '\'' +
                 '}';
     }
 }
