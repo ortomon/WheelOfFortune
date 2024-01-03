@@ -29,18 +29,18 @@ public class Tableau {
         }
     }
 
-    public void reveal(String guess) {
-        if (attributesNotEmpty()) {
-            guess = guess.toUpperCase();
-            if (guess.length() == 1) {
-                openLetter(guess.charAt(0));
-            } else {
-                openWord(guess);
-            }
-        } else {
-            System.out.println("атрибуты Tableau пусты");
-        }
-    }
+//    public void reveal(String guess) {
+//        if (attributesNotEmpty()) {
+//            guess = guess.toUpperCase();
+//            if (guess.length() == 1) {
+//                openLetter(guess.charAt(0));
+//            } else {
+//                openWord(guess);
+//            }
+//        } else {
+//            System.out.println("атрибуты Tableau пусты");
+//        }
+//    }
 
     public boolean containsUnknownLetters() {
         for (char letter : letters) {
@@ -51,28 +51,17 @@ public class Tableau {
         return false;
     }
 
-    private void openLetter(char guess) {
-        boolean found = false;
-
+    public void openLetter(char guess) {
         for (int i = 0; i < correctAnswer.getText().length(); i++) {
             if (correctAnswer.getText().charAt(i) == guess) {
                 letters[i] = guess;
-                found = true;
             }
-        }
-
-        if (!found) {
-            System.out.println("Буквы '" + guess + "' нет в ответе.");
         }
     }
 
-    private void openWord(String word) {
-        if (correctAnswer.getText().equals(word)) {
-            for (int i = 0; i < letters.length; i++) {
-                letters[i] = correctAnswer.getText().charAt(i);
-            }
-        } else {
-            System.out.println("Неверное слово.");
+    public void openWord() {
+        for (int i = 0; i < letters.length; i++) {
+            letters[i] = correctAnswer.getText().charAt(i);
         }
     }
 

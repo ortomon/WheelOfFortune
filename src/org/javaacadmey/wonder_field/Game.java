@@ -17,14 +17,20 @@ public class Game {
 
     private GameQuestion[] gameQuestions;
     private Tableau tableau;
+    private Yakubovich yakubovich;
+
+    public Game(Yakubovich yakubovich) {
+        initGameQuestion();
+        this.yakubovich = yakubovich;
+    }
 
     // Инициализация вопросов и ответов (реализация с уже созданными вопросами и ответами)
-    public void initGame() {
+    public void initGameQuestion() {
         gameQuestions = new GameQuestion[]{
-                new GameQuestion(new Question("Как меня зовут?"), new Answer("Алина")),
-                new GameQuestion(new Question("Какого цвета небо?"), new Answer("Голубое")),
-                new GameQuestion(new Question("Что носят все?"), new Answer("Трусы")),
-                new GameQuestion(new Question("Какое дерево украшают на новый год?"), new Answer("Ёлка"))
+                new GameQuestion("Как меня зовут?", new Answer("Алина")),
+                new GameQuestion("Какого цвета небо?", new Answer("Голубое")),
+                new GameQuestion("Что носят все?", new Answer("Трусы")),
+                new GameQuestion("Какое дерево украшают на новый год?", new Answer("Ёлка"))
         };
 
         System.out.println("Иницализация закончена, игра начнется через 5 секунд");
@@ -56,7 +62,6 @@ public class Game {
 
 
 
-    private Yakubovich yakubovich = new Yakubovich();
 
 //    public void init() {
 //        initGame();
@@ -68,9 +73,7 @@ public class Game {
 //        yakubovich.farewell();
 //    }
 
-    public void invitePlayers(Player[] players, boolean isFinalRound) {
-        yakubovich.invitePlayers(players, isFinalRound);
-    }
+
 
     public void askQuestion(GameQuestion gameQuestionText) {
         yakubovich.askQuestion(gameQuestionText);

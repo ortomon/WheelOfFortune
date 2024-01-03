@@ -2,8 +2,7 @@ package org.javaacadmey.wonder_field.player;
 
 import org.javaacadmey.wonder_field.Game;
 import org.javaacadmey.wonder_field.SymbolChecker;
-import org.javaacadmey.wonder_field.TypePlayerAnswer;
-import org.javaacadmey.wonder_field.gamequestion.components.Answer;
+import org.javaacadmey.wonder_field.TypeAnswer;
 
 public class Player implements SymbolChecker {
     private String name;
@@ -23,12 +22,12 @@ public class Player implements SymbolChecker {
 
             switch (command) {
                 case "б":
-                    playerAnswer.setTypePlayerAnswer(TypePlayerAnswer.LETTER);
-                    playerAnswer.setAnswer(new Answer(String.valueOf(sayLetter())));
+                    playerAnswer.setTypeAnswer(TypeAnswer.LETTER);
+                    playerAnswer.setText(String.valueOf(sayLetter()));
                     return playerAnswer;
                 case "c":
-                    playerAnswer.setTypePlayerAnswer(TypePlayerAnswer.WORD);
-                    playerAnswer.setAnswer(new Answer(sayWord()));
+                    playerAnswer.setTypeAnswer(TypeAnswer.WORD);
+                    playerAnswer.setText(sayWord());
                     return playerAnswer;
                 default:
                     System.out.println("Некорректное значение, введите 'б' или 'с'.");

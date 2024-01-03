@@ -1,30 +1,23 @@
 package org.javaacadmey.wonder_field.player;
 
-import org.javaacadmey.wonder_field.TypePlayerAnswer;
+import org.javaacadmey.wonder_field.TypeAnswer;
 import org.javaacadmey.wonder_field.gamequestion.components.Answer;
 
-public class PlayerAnswer {
-    private TypePlayerAnswer typePlayerAnswer;
-    private Answer answer;
+public class PlayerAnswer extends Answer {
+    private TypeAnswer typeAnswer;
 
-    public PlayerAnswer(TypePlayerAnswer typePlayerAnswer, Answer answer) {
-        this.typePlayerAnswer = typePlayerAnswer;
-        this.answer = answer;
+    public PlayerAnswer(String answer, TypeAnswer typeAnswer) {
+        super(answer);
+        this.typeAnswer = typeAnswer;
     }
 
-    public TypePlayerAnswer getTypePlayerAnswer() {
-        return typePlayerAnswer;
+    public TypeAnswer getTypeAnswer() {
+        return typeAnswer;
     }
 
-    public void setTypePlayerAnswer(TypePlayerAnswer typePlayerAnswer) {
-        this.typePlayerAnswer = typePlayerAnswer;
+    public void setTypeAnswer(TypeAnswer typeAnswer) {
+        this.typeAnswer = typeAnswer;
     }
 
-    public Answer getAnswer() {
-        return answer;
-    }
 
-    public void setAnswer(Answer answer) {
-        this.answer = answer;
-    }
 }

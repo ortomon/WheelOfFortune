@@ -1,6 +1,6 @@
 package org.javaacadmey.wonder_field;
 
-public enum TypePlayerAnswer {
+public enum TypeAnswer {
     LETTER,
     WORD;
 }
