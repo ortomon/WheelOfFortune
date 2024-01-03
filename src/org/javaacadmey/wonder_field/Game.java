@@ -18,10 +18,37 @@ public class Game {
     private GameQuestion[] gameQuestions;
     private Tableau tableau;
     private Yakubovich yakubovich;
+    private Player[] winners;
 
     public Game(Yakubovich yakubovich) {
         initGameQuestion();
         this.yakubovich = yakubovich;
+    }
+
+    private boolean checkTableau() {
+        return tableau.containsUnknownLetters();
+    }
+
+    public Player[] initPlayers() {
+        Player[] players = new Player[NUMBER_PLAYERS];
+        for (int i = 0; i < players.length; i++) {
+            Player player = new Player();
+            System.out.println("Игрок №" + i + " представьтесь: как вас зовут?");
+            player.setName(scanner.nextLine());
+            System.out.println("Из какого вы города?");
+            player.setCity(scanner.nextLine());
+            players[i] = player;
+        }
+        return players;
+    }
+
+    private String[] pullPlayersNames() {
+        Player[] players = initPlayers();
+        String[] names = new String[NUMBER_PLAYERS];
+        for (int i = 0; i < NUMBER_PLAYERS; i++) {
+            names[i] = players[i].getName();
+        }
+        return names;
     }
 
     // Инициализация вопросов и ответов (реализация с уже созданными вопросами и ответами)
@@ -40,112 +67,10 @@ public class Game {
         return gameQuestions;
     }
 
+    private boolean playerMove(GameQuestion gameQuestion, Player player) {
+        player.move();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public void init() {
-//        initGame();
-//        initTableau();
-//        yakubovich.startShow();
-//    }
-
-//    public void farewell() {
-//        yakubovich.farewell();
-//    }
-
-
-
-    public void askQuestion(GameQuestion gameQuestionText) {
-        yakubovich.askQuestion(gameQuestionText);
     }
-
-    public void celebrateWinner(Player player, boolean isFinalRound) {
-        yakubovich.celebrateWinner(player, isFinalRound);
-    }
-
-    public void checkAnswer(char letter, String answer, String[] tableauLetters) {
-        yakubovich.checkAnswer(letter, answer, tableauLetters);
-    }
-
-    public void checkWord(String word, String correctAnswer) {
-        yakubovich.checkWord(word, correctAnswer);
-    }
-
-//    public PlayerAnswer makeMove(Player player) throws Exception {
-//        System.out.println("Ход игрока " + player.getName() + ", " + player.getCity());
-//
-//        char answerType = getPlayerAnswerType();
-//        return processPlayerAnswer(player, answerType);
-//    }
-
-//    public void askQuestion() {
-//        for (Question q : questions) {
-//            System.out.println("Вопрос: " + q.getQuestion());
-//            tableau.printLetters();
-//        }
-//    }
-
-    // Запросить тип ответа у игрока ('б' - буква, 'с' - слово)
-    private char getPlayerAnswerType() {
-        char answerType;
-        do {
-            System.out.println("Если хотите букву, нажмите 'б' и Enter. Если хотите слово, нажмите 'с' и Enter.");
-            String input = scanner.next().toLowerCase();
-            if (input.length() == 1) {
-                answerType = input.charAt(0);
-                if (answerType == 'б' || answerType == 'с') {
-                    return answerType;
-                }
-            }
-            System.out.println("Некорректное значение, введите 'б' или 'с'.");
-        } while (true);
-    }
-
-
-    // Обработать ответ игрока в зависимости от типа ('б' - буква, 'с' - слово)
-//    private PlayerAnswer processPlayerAnswer(Player player, char answerType) throws Exception {
-//        PlayerAnswer playerAnswer = new PlayerAnswer();
-//        playerAnswer.setAnswerType(answerType);
-//
-//        switch (answerType) {
-//            case 'б':
-//                char letter = player.sayLetter();
-//                playerAnswer.setAnswer(String.valueOf(letter));
-//                break;
-//            case 'с':
-//                String word = player.sayWord();
-//                playerAnswer.setAnswer(word);
-//                break;
-//        }
-//
-//        return playerAnswer;
-//    }
-
-//    public void initTableau() {
-//        if (gameQuestions.length > 0) {
-//            tableau = new Tableau(gameQuestions[0].getAnswer());
-//        }
-//    }
 }
 
 /**    // инициализация игры

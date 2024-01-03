@@ -23,7 +23,7 @@ public class Yakubovich {
                 System.out.println("Якубович: Есть такая буква, откройте ее!");
             } else {
                 System.out.println("Якубович: Нет такой буквы! Следующий игрок, крутите барабан!");
-                System.out.println("__________________________________");
+                printSeparator();
             }
         } else {
             if (checkPlayerAnswer(playerAnswerText, correctAnswer)) {
@@ -33,7 +33,7 @@ public class Yakubovich {
                 sayIfPlayerWins(player, true);
             } else {
                 System.out.println("Якубович: Неверно! Следующий игрок!");
-                System.out.println("__________________________________");
+                printSeparator();
             }
         }
     }
@@ -107,70 +107,6 @@ public class Yakubovich {
         return result.toString();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public void askQuestion(GameQuestion gameQuestionText) {
-//        System.out.println("Якубович: Внимание вопрос! \n" + gameQuestionText.getQuestion());
-//    }
-
-    public void celebrateWinner(Player player, boolean isFinalRound) {
-        if (!isFinalRound) {
-            System.out.println("Якубович: Молодец! " + player.getName() + " из " + player.getCity() + " проходит в финал!");
-        } else {
-            System.out.println("Якубович: И перед нами победитель Капитал шоу поле чудес! Это " + player.getName() + " из " + player.getCity());
-        }
-    }
-
-    public void checkAnswer(char letter, String answer, String[] tableauLetters) {
-        String message;
-        if (answer.indexOf(letter) != -1) {
-            message = "Якубович: Есть такая буква, откройте ее!";
-        } else {
-            message = "Якубович: Нет такой буквы! Следующий игрок, крутите барабан!";
-        }
-        printSeparator();
-        System.out.println(message);
-        printSeparator();
-    }
-
-    public void checkWord(String word, String correctAnswer) {
-        String message;
-        if (word.equalsIgnoreCase(correctAnswer)) {
-            message = "Якубович: " + word + "! Абсолютно верно!";
-        } else {
-            message = "Якубович: Неверно! Следующий игрок!";
-        }
-        printSeparator();
-        System.out.println(message);
-        printSeparator();
-    }
 
     private void printSeparator() {
         System.out.println("__________________________________");

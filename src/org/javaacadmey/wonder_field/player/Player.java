@@ -3,18 +3,14 @@ package org.javaacadmey.wonder_field.player;
 import org.javaacadmey.wonder_field.Game;
 import org.javaacadmey.wonder_field.SymbolChecker;
 import org.javaacadmey.wonder_field.TypeAnswer;
+import org.javaacadmey.wonder_field.gamequestion.components.Answer;
 
 public class Player implements SymbolChecker {
     private String name;
     private String city;
     private PlayerAnswer playerAnswer;
 
-    public Player(String name, String city) {
-        this.name = name;
-        this.city = city;
-    }
-
-    public PlayerAnswer move() {
+    public Answer move() {
         System.out.printf("Ход игрока %s, город %s", name, city);
         while (true) {
             System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
