@@ -15,9 +15,8 @@ public class Tableau {
         Arrays.fill(letters, SYMBOL_OF_UNSOLVED_LETTERS);
     }
 
-    // отображает в консоли все буквы (отгаданные и неотгаданных)
-    public void printLetters() {
-        if (attributesAreNotEmpty()) {
+    public void displayTableau() {
+        if (attributesNotEmpty()) {
             System.out.print("\" ");
 
             for (char letter : letters) {
@@ -30,32 +29,44 @@ public class Tableau {
         }
     }
 
-    // открывает букву(ы)
-    public void openLetter(char letter) {
+    public void reveal(String guess) {
         if (attributesNotEmpty()) {
-            letter = Character.toUpperCase(letter);
-
-            // Проверяем, содержится ли буква в правильном ответе
-            boolean found = false;
-
-            for (int i = 0; i < correctAnswer.getText().length(); i++) {
-                if (correctAnswer.getText().charAt(i) == letter) {
-                    letters[i] = letter;
-                    found = true;
-                }
-            }
-
-            if (!found) {
-                System.out.println("Буквы '" + letter + "' нет в ответе.");
+            guess = guess.toUpperCase();
+            if (guess.length() == 1) {
+                openLetter(guess.charAt(0));
+            } else {
+                openWord(guess);
             }
         } else {
             System.out.println("атрибуты Tableau пусты");
         }
     }
 
-    // открывает слово целиком.
-    public void openWord(String word) {
-        word = word.toUpperCase();
+    public boolean containsUnknownLetters() {
+        for (char letter : letters) {
+            if (letter == SYMBOL_OF_UNSOLVED_LETTERS) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void openLetter(char guess) {
+        boolean found = false;
+
+        for (int i = 0; i < correctAnswer.getText().length(); i++) {
+            if (correctAnswer.getText().charAt(i) == guess) {
+                letters[i] = guess;
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Буквы '" + guess + "' нет в ответе.");
+        }
+    }
+
+    private void openWord(String word) {
         if (correctAnswer.getText().equals(word)) {
             for (int i = 0; i < letters.length; i++) {
                 letters[i] = correctAnswer.getText().charAt(i);
@@ -65,96 +76,7 @@ public class Tableau {
         }
     }
 
-    private boolean attributesAreNotEmpty() {
-        if (correctAnswer != null && letters != null) {
-            return true;
-        }
-        return false;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // инициализация табло
-    public Tableau(String correctAnswer) {
-        this.correctAnswer = correctAnswer.toUpperCase();
-        init();
-    }
-
-    public void init() {
-        if (attributesNotEmpty()) {
-            letters = new String[correctAnswer.length()];
-            Arrays.fill(letters, SYMBOL_OF_UNSOLVED_LETTERS);
-        }
-    }
-
-//    // отображает в консоли все буквы (отгаданные и неотгаданных)
-//    public void printLetters() {
-//        if (attributesNotEmpty()) {
-//            System.out.println(Arrays.toString(letters));
-//        }
-//    }
-
-//    // открывает букву(ы)
-//    public void openLetter(char letter) {
-//        if (attributesNotEmpty()) {
-//            letter = Character.toUpperCase(letter);
-//
-//            for (int i = 0; i < correctAnswer.length(); i++) {
-//                if (correctAnswer.charAt(i) == letter) {
-//                    letters[i] = String.valueOf(letter);
-//                }
-//            }
-//        }
-//    }
-
-//    // открывает слово целиком.
-//    public void openWord(String word) {
-//        if (attributesNotEmpty()) {
-//            word = word.toUpperCase();
-//
-//            if (correctAnswer.equals(word)) {
-//                letters = correctAnswer.split("");
-//            }
-//        }
-//    }
-
-    // если есть неразгаданные буквы - вернет истину, иначе ложь.
-    public boolean containsUnknownLetters() {
-        if (attributesNotEmpty()) {
-            for (String letter : letters) {
-                if (SYMBOL_OF_UNSOLVED_LETTERS.equals(letter)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    // метод, проверяющий что атрибуты не пусты
-    public boolean attributesNotEmpty() {
+    private boolean attributesNotEmpty() {
         return correctAnswer != null && letters != null;
     }
 }
