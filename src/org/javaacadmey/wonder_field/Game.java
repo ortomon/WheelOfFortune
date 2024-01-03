@@ -42,6 +42,20 @@ public class Game {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private Yakubovich yakubovich = new Yakubovich();
 
 //    public void init() {
@@ -74,12 +88,12 @@ public class Game {
         yakubovich.checkWord(word, correctAnswer);
     }
 
-    public PlayerAnswer makeMove(Player player) throws Exception {
-        System.out.println("Ход игрока " + player.getName() + ", " + player.getCity());
-
-        char answerType = getPlayerAnswerType();
-        return processPlayerAnswer(player, answerType);
-    }
+//    public PlayerAnswer makeMove(Player player) throws Exception {
+//        System.out.println("Ход игрока " + player.getName() + ", " + player.getCity());
+//
+//        char answerType = getPlayerAnswerType();
+//        return processPlayerAnswer(player, answerType);
+//    }
 
 //    public void askQuestion() {
 //        for (Question q : questions) {
@@ -104,24 +118,25 @@ public class Game {
         } while (true);
     }
 
+
     // Обработать ответ игрока в зависимости от типа ('б' - буква, 'с' - слово)
-    private PlayerAnswer processPlayerAnswer(Player player, char answerType) throws Exception {
-        PlayerAnswer playerAnswer = new PlayerAnswer();
-        playerAnswer.setAnswerType(answerType);
-
-        switch (answerType) {
-            case 'б':
-                char letter = player.sayLetter();
-                playerAnswer.setAnswer(String.valueOf(letter));
-                break;
-            case 'с':
-                String word = player.sayWord();
-                playerAnswer.setAnswer(word);
-                break;
-        }
-
-        return playerAnswer;
-    }
+//    private PlayerAnswer processPlayerAnswer(Player player, char answerType) throws Exception {
+//        PlayerAnswer playerAnswer = new PlayerAnswer();
+//        playerAnswer.setAnswerType(answerType);
+//
+//        switch (answerType) {
+//            case 'б':
+//                char letter = player.sayLetter();
+//                playerAnswer.setAnswer(String.valueOf(letter));
+//                break;
+//            case 'с':
+//                String word = player.sayWord();
+//                playerAnswer.setAnswer(word);
+//                break;
+//        }
+//
+//        return playerAnswer;
+//    }
 
 //    public void initTableau() {
 //        if (gameQuestions.length > 0) {

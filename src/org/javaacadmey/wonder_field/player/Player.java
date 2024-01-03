@@ -1,35 +1,74 @@
 package org.javaacadmey.wonder_field.player;
 
 import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.SymbolChecker;
+import org.javaacadmey.wonder_field.TypePlayerAnswer;
+import org.javaacadmey.wonder_field.gamequestion.components.Answer;
 
-public class Player {
+public class Player implements SymbolChecker {
     private String name;
     private String city;
+    private PlayerAnswer playerAnswer;
 
     public Player(String name, String city) {
         this.name = name;
         this.city = city;
     }
 
-    // игрок кричит букву
-    public char sayLetter() throws Exception {
-        char letter;
-        do {
-            String input = Game.scanner.next().toLowerCase();
-            if (input.length() == 1 && Character.isLetter(input.charAt(0)) && Character.UnicodeBlock.CYRILLIC.equals(Character.UnicodeBlock.of(input.charAt(0)))) {
-                letter = Character.toUpperCase(input.charAt(0));
-                System.out.println("Игрок " + name + ": буква " + letter);
-                return letter;
+    public PlayerAnswer move() {
+        System.out.printf("Ход игрока %s, город %s", name, city);
+        while (true) {
+            System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
+            String command = Game.scanner.nextLine().toLowerCase();
+
+            switch (command) {
+                case "б":
+                    playerAnswer.setTypePlayerAnswer(TypePlayerAnswer.LETTER);
+                    playerAnswer.setAnswer(new Answer(String.valueOf(sayLetter())));
+                    return playerAnswer;
+                case "c":
+                    playerAnswer.setTypePlayerAnswer(TypePlayerAnswer.WORD);
+                    playerAnswer.setAnswer(new Answer(sayWord()));
+                    return playerAnswer;
+                default:
+                    System.out.println("Некорректное значение, введите 'б' или 'с'.");
             }
-            System.out.println("Ошибка! Введите русскую букву.");
-        } while (true);
+        }
     }
 
-    // игрок кричит слово
-    public String sayWord() {
-        String word = Game.scanner.nextLine();
-        System.out.println("Игрок " + name + ": слово " + word);
-        return word;
+    private char sayLetter() {
+        while (true) {
+            String letter = Game.scanner.nextLine().trim().toUpperCase();
+
+            if (letter.length() == 1) {
+                if (symbolIsCyrillic(letter.charAt(0))) {
+                    System.out.printf("Игрок %s: буква %s", name, letter);
+                    return letter.charAt(0);
+                } else {
+                    System.out.println("Введите русскую букву");
+                }
+            } else {
+                System.out.println("Введите только одну букву.");
+            }
+        }
+    }
+
+    private String sayWord() {
+        while (true) {
+            String word = Game.scanner.nextLine().trim().toUpperCase();
+
+            if (!word.isEmpty()) {
+                System.out.printf("Игрок %s: слово %s", name, word);
+                return word;
+            } else {
+                System.out.println("Вы не ввели слово, попробуйте еще раз.");
+            }
+        }
+    }
+
+    @Override
+    public boolean symbolIsCyrillic(char letter) {
+        return SymbolChecker.super.symbolIsCyrillic(letter);
     }
 
     public String getName() {
@@ -46,5 +85,9 @@ public class Player {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public PlayerAnswer getPlayerAnswer() {
+        return playerAnswer;
     }
 }

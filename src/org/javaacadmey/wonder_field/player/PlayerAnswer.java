@@ -1,22 +1,30 @@
 package org.javaacadmey.wonder_field.player;
 
+import org.javaacadmey.wonder_field.TypePlayerAnswer;
+import org.javaacadmey.wonder_field.gamequestion.components.Answer;
+
 public class PlayerAnswer {
-    private char answerType; // 'б' - буква, 'с' - слово
-    private String answer;
+    private TypePlayerAnswer typePlayerAnswer;
+    private Answer answer;
 
-    public char getAnswerType() {
-        return answerType;
+    public PlayerAnswer(TypePlayerAnswer typePlayerAnswer, Answer answer) {
+        this.typePlayerAnswer = typePlayerAnswer;
+        this.answer = answer;
     }
 
-    public void setAnswerType(char answerType) {
-        this.answerType = answerType;
+    public TypePlayerAnswer getTypePlayerAnswer() {
+        return typePlayerAnswer;
     }
 
-    public String getAnswer() {
+    public void setTypePlayerAnswer(TypePlayerAnswer typePlayerAnswer) {
+        this.typePlayerAnswer = typePlayerAnswer;
+    }
+
+    public Answer getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(Answer answer) {
         this.answer = answer;
     }
 }
