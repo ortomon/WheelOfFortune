@@ -9,7 +9,7 @@ public class Tableau {
     private Answer correctAnswer;
     private char[] letters;
 
-    public Tableau(Answer correctAnswer) {
+    public void init(Answer correctAnswer) {
         this.correctAnswer = correctAnswer;
         letters = new char[correctAnswer.getText().length()];
         Arrays.fill(letters, SYMBOL_OF_UNSOLVED_LETTERS);
@@ -17,13 +17,7 @@ public class Tableau {
 
     public void displayTableau() {
         if (attributesNotEmpty()) {
-            System.out.print("\" ");
-
-            for (char letter : letters) {
-                System.out.print(letter + " ");
-            }
-
-            System.out.println("\"");
+            System.out.println(String.join(" ", String.valueOf(letters)));
         } else {
             System.out.println("атрибуты Tableau пусты");
         }

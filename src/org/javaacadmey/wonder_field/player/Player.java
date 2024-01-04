@@ -10,7 +10,7 @@ public class Player implements SymbolChecker {
     private String city;
     private PlayerAnswer playerAnswer;
 
-    public Answer move() {
+    public PlayerAnswer move() {
         System.out.printf("Ход игрока %s, город %s", name, city);
         while (true) {
             System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");

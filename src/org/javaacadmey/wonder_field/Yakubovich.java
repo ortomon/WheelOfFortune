@@ -12,37 +12,35 @@ public class Yakubovich {
         this.numberOfRound = 0;
     }
 
-
-    public void checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
-        PlayerAnswer playerAnswer = player.getPlayerAnswer();
+    public boolean checkPlayerAnswer(Player player, PlayerAnswer playerAnswer, Answer correctAnswer, Tableau tableau, boolean isFinalRound) {
         String playerAnswerText = player.getPlayerAnswer().getText();
 
         if (playerAnswer.getTypeAnswer() == TypeAnswer.LETTER) {
             if (checkPlayerAnswer(playerAnswerText.charAt(0), correctAnswer)) {
                 tableau.openLetter(playerAnswerText.charAt(0));
                 System.out.println("Якубович: Есть такая буква, откройте ее!");
+                return true;
             } else {
                 System.out.println("Якубович: Нет такой буквы! Следующий игрок, крутите барабан!");
                 printSeparator();
+                return false;
             }
         } else {
             if (checkPlayerAnswer(playerAnswerText, correctAnswer)) {
                 tableau.openWord();
                 System.out.println("Якубович: " + playerAnswer + "! Абсолютно верно!");
-                // boolean isFinalRound
-                sayIfPlayerWins(player, true);
+                sayIfPlayerWins(player, isFinalRound);
+                return true;
             } else {
                 System.out.println("Якубович: Неверно! Следующий игрок!");
                 printSeparator();
+                return false;
             }
         }
     }
 
     private boolean checkPlayerAnswer(String guess, Answer correctAnswer) {
-        if (correctAnswer.getText().equals(guess)) {
-            return true;
-        }
-        return false;
+        return correctAnswer.getText().equals(guess);
     }
 
     private boolean checkPlayerAnswer(char guess, Answer correctAnswer) {
@@ -96,6 +94,10 @@ public class Yakubovich {
     }
 
     private String joinStrings(Player[] players) {
+        if (players == null || players.length == 0) {
+            return "";
+        }
+
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < players.length; i++) {

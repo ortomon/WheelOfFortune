@@ -2,9 +2,8 @@ package org.javaacadmey.wonder_field;
 
 import org.javaacadmey.wonder_field.gamequestion.components.Answer;
 import org.javaacadmey.wonder_field.gamequestion.GameQuestion;
-import org.javaacadmey.wonder_field.gamequestion.components.Question;
-import org.javaacadmey.wonder_field.player.PlayerAnswer;
 import org.javaacadmey.wonder_field.player.Player;
+import org.javaacadmey.wonder_field.player.PlayerAnswer;
 
 import java.util.Scanner;
 
@@ -15,18 +14,16 @@ public class Game {
     public static final int FINAL_ROUND_INDEX = 3;
     public static final Scanner scanner = new Scanner(System.in);
 
-    private GameQuestion[] gameQuestions;
+    private GameQuestion[] questionsAndAnswers;
     private Tableau tableau;
     private Yakubovich yakubovich;
     private Player[] winners;
+    private Player[] players;
 
     public Game(Yakubovich yakubovich) {
         initGameQuestion();
         this.yakubovich = yakubovich;
-    }
-
-    private boolean checkTableau() {
-        return tableau.containsUnknownLetters();
+        this.winners = new Player[NUMBER_ROUNDS];
     }
 
     public Player[] initPlayers() {
@@ -53,7 +50,7 @@ public class Game {
 
     // Инициализация вопросов и ответов (реализация с уже созданными вопросами и ответами)
     public void initGameQuestion() {
-        gameQuestions = new GameQuestion[]{
+        questionsAndAnswers = new GameQuestion[]{
                 new GameQuestion("Как меня зовут?", new Answer("Алина")),
                 new GameQuestion("Какого цвета небо?", new Answer("Голубое")),
                 new GameQuestion("Что носят все?", new Answer("Трусы")),
@@ -63,13 +60,82 @@ public class Game {
         System.out.println("Иницализация закончена, игра начнется через 5 секунд");
     }
 
-    public GameQuestion[] getGameQuestions() {
-        return gameQuestions;
+    private boolean checkTableau() {
+        return tableau.containsUnknownLetters();
     }
 
-    private boolean playerMove(GameQuestion gameQuestion, Player player) {
-        player.move();
+    private boolean playerMove(GameQuestion gameQuestion, Player player,  boolean isFinalRound) {
+        do {
+            PlayerAnswer playerAnswer = player.move();
+            boolean correctGuess = yakubovich.checkPlayerAnswer(player, playerAnswer, gameQuestion.getAnswer(), tableau, isFinalRound);
 
+            if (correctGuess) {
+                tableau.displayTableau();
+
+                if (!checkTableau()) {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } while (true);
+    }
+
+    public GameQuestion getQuestionForRound(int round) {
+        if (round != FINAL_ROUND_INDEX) {
+            return questionsAndAnswers[round];
+        } else {
+            return questionsAndAnswers[FINAL_ROUND_INDEX];
+        }
+    }
+
+    private void playRound(int round, Player[] players) {
+        GameQuestion gameQuestion = getQuestionForRound(round);
+        tableau.init(gameQuestion.getAnswer());
+        yakubovich.invitePlayers(players, round + 1);
+        yakubovich.askQuestion(gameQuestion);
+
+        while (checkTableau()) {
+            for (Player player : players) {
+                boolean playerWins = playerMove(gameQuestion, player, false);
+                if (playerWins) {
+                    winners[round] = player;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void playGroupRounds() {
+        for (int round = 0; round < NUMBER_GROUP_ROUNDS; round++) {
+            System.out.println("Групповой раунд " + (round + 1));
+            playRound(round, players);
+            System.out.println("Групповой раунд закончен.");
+        }
+    }
+
+    private void playFinalRound() {
+        GameQuestion finalRoundQuestion = getQuestionForRound(FINAL_ROUND_INDEX);
+        tableau.init(finalRoundQuestion.getAnswer());
+        yakubovich.invitePlayers(winners, FINAL_ROUND_INDEX);
+        yakubovich.askQuestion(finalRoundQuestion);
+
+        while (checkTableau()) {
+            for (Player winner : winners) {
+                boolean winnerWins = playerMove(finalRoundQuestion, winner, true);
+                if (winnerWins) {
+                    yakubovich.sayIfPlayerWins(winner, true);
+                    return;
+                }
+            }
+        }
+    }
+
+    public void start() {
+        yakubovich.startShow();
+        playGroupRounds();
+        playFinalRound();
+        yakubovich.endShow();
     }
 }
 
