@@ -1,4 +1,4 @@
-package org.javaacadmey.wonder_field.gamequestion.components;
+package org.javaacadmey.wonder_field.components.gamequestion.components;
 
 public class Question {
     private String text;

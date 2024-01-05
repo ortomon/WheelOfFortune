@@ -1,7 +1,7 @@
-package org.javaacadmey.wonder_field.gamequestion;
+package org.javaacadmey.wonder_field.components.gamequestion;
 
 import org.javaacadmey.wonder_field.Game;
-import org.javaacadmey.wonder_field.gamequestion.components.Answer;
+import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
 
 public class TestGameQuestion extends GameQuestion {
     public TestGameQuestion(String question, Answer answer) {

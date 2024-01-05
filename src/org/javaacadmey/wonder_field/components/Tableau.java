@@ -1,7 +1,6 @@
-package org.javaacadmey.wonder_field;
+package org.javaacadmey.wonder_field.components;
 
-import org.javaacadmey.wonder_field.gamequestion.components.Answer;
-
+import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
 import java.util.Arrays;
 
 public class Tableau {
@@ -17,13 +16,10 @@ public class Tableau {
 
     public void displayTableau() {
         if (attributesNotEmpty()) {
-//            System.out.println(String.valueOf(letters).replace("", " "));
             for (char letter : letters) {
                 System.out.print(letter + " ");
             }
             System.out.println();
-        } else {
-            System.out.println("атрибуты Tableau пусты");
         }
     }
 
@@ -37,9 +33,11 @@ public class Tableau {
     }
 
     public void openLetter(char guess) {
-        for (int i = 0; i < correctAnswer.getText().length(); i++) {
-            if (correctAnswer.getText().charAt(i) == guess) {
-                letters[i] = guess;
+        if (attributesNotEmpty()) {
+            for (int i = 0; i < correctAnswer.getText().length(); i++) {
+                if (correctAnswer.getText().charAt(i) == guess) {
+                    letters[i] = guess;
+                }
             }
         }
     }
@@ -51,6 +49,10 @@ public class Tableau {
     }
 
     private boolean attributesNotEmpty() {
-        return (correctAnswer != null && !correctAnswer.getText().isEmpty() && letters != null);
+        if (correctAnswer == null || correctAnswer.getText().isEmpty() || letters == null) {
+            System.out.println("атрибуты Tableau пусты");
+            return false;
+        }
+        return true;
     }
 }

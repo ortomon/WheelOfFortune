@@ -1,6 +1,4 @@
-package org.javaacadmey.wonder_field.player;
-
-import org.javaacadmey.wonder_field.player.Player;
+package org.javaacadmey.wonder_field.components.player;
 
 public class TestPlayers extends Player {
     private static Player[] initPlayers(String[] names, String[] locations) {

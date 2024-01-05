@@ -1,13 +1,17 @@
-package org.javaacadmey.wonder_field;
+package org.javaacadmey.wonder_field.components;
 
-import org.javaacadmey.wonder_field.gamequestion.GameQuestion;
-import org.javaacadmey.wonder_field.gamequestion.components.Answer;
-import org.javaacadmey.wonder_field.player.Player;
-import org.javaacadmey.wonder_field.player.PlayerAnswer;
+import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
+import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
+import org.javaacadmey.wonder_field.components.player.Player;
+import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
+import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
 public class Yakubovich {
-    public boolean checkPlayerAnswer(Player player, PlayerAnswer playerAnswer, Answer correctAnswer, Tableau tableau, boolean isFinalRound) {
+    public boolean checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau, boolean isFinalRound) {
+        PlayerAnswer playerAnswer = player.getPlayerAnswer();
         String playerAnswerText = player.getPlayerAnswer().getText();
+
 
         if (playerAnswer.getTypeAnswer() == TypeAnswer.LETTER) {
             if (checkPlayerAnswer(playerAnswerText.charAt(0), correctAnswer)) {
@@ -46,7 +50,7 @@ public class Yakubovich {
         return false;
     }
 
-    public void sayIfPlayerWins(Player player, boolean isFinalRound) {
+    private void sayIfPlayerWins(Player player, boolean isFinalRound) {
         String playerName = player.getName();
         String playerCity = player.getCity();
 

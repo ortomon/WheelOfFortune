@@ -1,9 +1,8 @@
-package org.javaacadmey.wonder_field.player;
+package org.javaacadmey.wonder_field.components.player;
 
 import org.javaacadmey.wonder_field.Game;
-import org.javaacadmey.wonder_field.SymbolChecker;
-import org.javaacadmey.wonder_field.TypeAnswer;
-import org.javaacadmey.wonder_field.gamequestion.components.Answer;
+import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
+import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
 public class Player implements SymbolChecker {
     private String name;
@@ -20,23 +19,24 @@ public class Player implements SymbolChecker {
         this.playerAnswer = new PlayerAnswer("");
     }
 
-    public PlayerAnswer move() {
+    public void move() {
         System.out.printf("Ход игрока %s, город %s\n", name, city);
         while (true) {
             System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
             String command = Game.scanner.nextLine().toLowerCase();
-
-            switch (command) {
-                case "б":
-                    playerAnswer.setTypeAnswer(TypeAnswer.LETTER);
-                    playerAnswer.setText(String.valueOf(sayLetter()));
-                    return playerAnswer;
-                case "с":
-                    playerAnswer.setTypeAnswer(TypeAnswer.WORD);
-                    playerAnswer.setText(sayWord());
-                    return playerAnswer;
-                default:
-                    System.out.println("Некорректное значение, введите 'б' или 'с'.");
+            if (symbolIsCyrillic(command.charAt(0))) {
+                switch (command) {
+                    case "б":
+                        playerAnswer.setTypeAnswer(TypeAnswer.LETTER);
+                        playerAnswer.setText(String.valueOf(sayLetter()));
+                        return;
+                    case "с":
+                        playerAnswer.setTypeAnswer(TypeAnswer.WORD);
+                        playerAnswer.setText(sayWord());
+                        return;
+                    default:
+                        System.out.println("Некорректное значение, введите 'б' или 'с'.");
+                }
             }
         }
     }
@@ -49,8 +49,6 @@ public class Player implements SymbolChecker {
                 if (symbolIsCyrillic(letter.charAt(0))) {
                     System.out.printf("Игрок %s: буква %s\n", name, letter);
                     return letter.charAt(0);
-                } else {
-                    System.out.println("Введите русскую букву");
                 }
             } else {
                 System.out.println("Введите только одну букву.");

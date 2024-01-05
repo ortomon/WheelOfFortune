@@ -1,11 +1,12 @@
 package org.javaacadmey.wonder_field;
 
-import org.javaacadmey.wonder_field.gamequestion.GameQuestion;
-import org.javaacadmey.wonder_field.gamequestion.components.Answer;
-import org.javaacadmey.wonder_field.player.Player;
-import org.javaacadmey.wonder_field.player.PlayerAnswer;
-import org.javaacadmey.wonder_field.gamequestion.TestGameQuestion;
-import org.javaacadmey.wonder_field.player.TestPlayers;
+import org.javaacadmey.wonder_field.components.Tableau;
+import org.javaacadmey.wonder_field.components.Yakubovich;
+import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
+import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
+import org.javaacadmey.wonder_field.components.player.Player;
+import org.javaacadmey.wonder_field.components.gamequestion.TestGameQuestion;
+import org.javaacadmey.wonder_field.components.player.TestPlayers;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -105,9 +106,9 @@ public class Game {
 
     private boolean playerMove(GameQuestion gameQuestion, Player player,  boolean isFinalRound) {
         do {
-            PlayerAnswer playerAnswer = player.move();
+            player.move();
             boolean correctGuess = yakubovich.checkPlayerAnswer(
-                    player, playerAnswer, gameQuestion.getAnswer(),
+                    player, gameQuestion.getAnswer(),
                     tableau, isFinalRound);
 
             if (correctGuess) {
@@ -160,11 +161,6 @@ public class Game {
             System.out.println("Групповой раунд " + (round + 1));
 //            initPlayers();
             initTestPlayers(round);
-//            GameQuestion gameQuestion = getQuestionForRound(round);
-//            tableau.init(gameQuestion.getAnswer());
-//            yakubovich.invitePlayers(pullPlayersNames(players), round);
-//            yakubovich.askQuestion(gameQuestion);
-//            tableau.displayTableau();
             playRound(round, players);
             System.out.println("Групповой раунд закончен.");
         }
@@ -172,14 +168,9 @@ public class Game {
 
     private void playFinalRound() {
         if (winners != null && winners.length > 0) {
-//            GameQuestion finalRoundQuestion = getQuestionForRound(FINAL_ROUND_INDEX);
-//            tableau.init(finalRoundQuestion.getAnswer());
-//            yakubovich.invitePlayers(pullPlayersNames(winners), FINAL_ROUND_INDEX);
-//            yakubovich.askQuestion(finalRoundQuestion);
-//            tableau.displayTableau();
             playRound(FINAL_ROUND_INDEX, winners);
         } else {
-            System.out.println("Нет победителей групповых раундов. Игра завершается.");
+            System.out.println("Нет победителей групповых раундов.");
         }
     }
 
