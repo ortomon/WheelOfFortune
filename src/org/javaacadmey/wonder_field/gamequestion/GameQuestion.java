@@ -21,7 +21,7 @@ public class GameQuestion extends Question{
 
     @Override
     public String toString() {
-        return "GameQuestion{" +
+        return super.toString() + "GameQuestion{" +
                 "answer=" + answer +
                 '}';
     }

@@ -20,17 +20,18 @@ public class Game {
     private Player[] winners;
     private Player[] players;
 
-    public Game(Yakubovich yakubovich) {
+    public Game() {
         initGameQuestion();
-        this.yakubovich = yakubovich;
-        this.winners = new Player[NUMBER_ROUNDS];
+        this.yakubovich = new Yakubovich();
+        this.tableau = new Tableau();
+        this.winners = new Player[NUMBER_GROUP_ROUNDS];
+        this.players = new Player[NUMBER_PLAYERS];
     }
 
-    public Player[] initPlayers() {
-        Player[] players = new Player[NUMBER_PLAYERS];
+    private Player[] initPlayers() {
         for (int i = 0; i < players.length; i++) {
             Player player = new Player();
-            System.out.println("Игрок №" + i + " представьтесь: как вас зовут?");
+            System.out.println("Игрок №" + (i + 1) + " представьтесь: как вас зовут?");
             player.setName(scanner.nextLine());
             System.out.println("Из какого вы города?");
             player.setCity(scanner.nextLine());
@@ -39,25 +40,62 @@ public class Game {
         return players;
     }
 
-    private String[] pullPlayersNames() {
-        Player[] players = initPlayers();
-        String[] names = new String[NUMBER_PLAYERS];
-        for (int i = 0; i < NUMBER_PLAYERS; i++) {
-            names[i] = players[i].getName();
+    private String pullPlayersNames(Player[] players) {
+        StringBuilder names = new StringBuilder();
+
+        for (int i = 0; i < players.length; i++) {
+            names.append(players[i].getName());
+            if (i < players.length - 1) {
+                names.append(", ");
+            }
         }
-        return names;
+        return names.toString();
     }
 
     // Инициализация вопросов и ответов (реализация с уже созданными вопросами и ответами)
-    public void initGameQuestion() {
+    private void initGameQuestion() {
         questionsAndAnswers = new GameQuestion[]{
-                new GameQuestion("Как меня зовут?", new Answer("Алина")),
-                new GameQuestion("Какого цвета небо?", new Answer("Голубое")),
+                new GameQuestion("Как меня зовут?", new Answer("АЛИНА")),
+                new GameQuestion("Какого цвета небо?", new Answer("ГОЛУБОЕ")),
                 new GameQuestion("Что носят все?", new Answer("Трусы")),
                 new GameQuestion("Какое дерево украшают на новый год?", new Answer("Ёлка"))
         };
 
         System.out.println("Иницализация закончена, игра начнется через 5 секунд");
+    }
+
+    private Player[] initPlayers1Round() {
+        return players = new Player[]{
+                new Player("алина", "уфа"),
+                new Player("максим", "москва"),
+                new Player("рушана", "спб")
+        };
+    }
+
+    private Player[] initPlayers2Round() {
+        return players = new Player[]{
+                new Player("соня", "омск"),
+                new Player("оксимирон", "лондон"),
+                new Player("бетмен", "готэм")
+        };
+    }
+
+    private Player[] initPlayers3Round() {
+        return players = new Player[]{
+                new Player("миша", "париж"),
+                new Player("олег", "торонто"),
+                new Player("дима", "казань")
+        };
+    }
+
+    private Player[] initPlayers(int round) {
+        if (round == 0) {
+            return initPlayers1Round();
+        } else if (round == 1) {
+            return initPlayers2Round();
+        } else {
+            return initPlayers3Round();
+        }
     }
 
     private boolean checkTableau() {
@@ -81,7 +119,7 @@ public class Game {
         } while (true);
     }
 
-    public GameQuestion getQuestionForRound(int round) {
+    private GameQuestion getQuestionForRound(int round) {
         if (round != FINAL_ROUND_INDEX) {
             return questionsAndAnswers[round];
         } else {
@@ -91,15 +129,19 @@ public class Game {
 
     private void playRound(int round, Player[] players) {
         GameQuestion gameQuestion = getQuestionForRound(round);
-        tableau.init(gameQuestion.getAnswer());
-        yakubovich.invitePlayers(players, round + 1);
-        yakubovich.askQuestion(gameQuestion);
 
         while (checkTableau()) {
             for (Player player : players) {
-                boolean playerWins = playerMove(gameQuestion, player, false);
-                if (playerWins) {
-                    winners[round] = player;
+                boolean playerWins;
+
+                if (round != FINAL_ROUND_INDEX) {
+                    playerWins = playerMove(gameQuestion, player, false);
+                    if (playerWins) {
+                        winners[round] = player;
+                        return;
+                    }
+                } else {
+                    playerMove(gameQuestion, player, true);
                     return;
                 }
             }
@@ -109,25 +151,28 @@ public class Game {
     private void playGroupRounds() {
         for (int round = 0; round < NUMBER_GROUP_ROUNDS; round++) {
             System.out.println("Групповой раунд " + (round + 1));
+//            initPlayers();
+            initPlayers(round);
+            GameQuestion gameQuestion = getQuestionForRound(round);
+            tableau.init(gameQuestion.getAnswer());
+            yakubovich.invitePlayers(pullPlayersNames(players), round);
+            yakubovich.askQuestion(gameQuestion);
+            tableau.displayTableau();
             playRound(round, players);
             System.out.println("Групповой раунд закончен.");
         }
     }
 
     private void playFinalRound() {
-        GameQuestion finalRoundQuestion = getQuestionForRound(FINAL_ROUND_INDEX);
-        tableau.init(finalRoundQuestion.getAnswer());
-        yakubovich.invitePlayers(winners, FINAL_ROUND_INDEX);
-        yakubovich.askQuestion(finalRoundQuestion);
-
-        while (checkTableau()) {
-            for (Player winner : winners) {
-                boolean winnerWins = playerMove(finalRoundQuestion, winner, true);
-                if (winnerWins) {
-                    yakubovich.sayIfPlayerWins(winner, true);
-                    return;
-                }
-            }
+        if (winners != null && winners.length > 0) {
+            GameQuestion finalRoundQuestion = getQuestionForRound(FINAL_ROUND_INDEX);
+            tableau.init(finalRoundQuestion.getAnswer());
+            yakubovich.invitePlayers(pullPlayersNames(winners), FINAL_ROUND_INDEX);
+            yakubovich.askQuestion(finalRoundQuestion);
+            tableau.displayTableau();
+            playRound(FINAL_ROUND_INDEX, winners);
+        } else {
+            System.out.println("Нет победителей групповых раундов. Игра завершается.");
         }
     }
 
@@ -136,6 +181,26 @@ public class Game {
         playGroupRounds();
         playFinalRound();
         yakubovich.endShow();
+    }
+
+    public GameQuestion[] getQuestionsAndAnswers() {
+        return questionsAndAnswers;
+    }
+
+    public Tableau getTableau() {
+        return tableau;
+    }
+
+    public Yakubovich getYakubovich() {
+        return yakubovich;
+    }
+
+    public Player[] getWinners() {
+        return winners;
+    }
+
+    public Player[] getPlayers() {
+        return players;
     }
 }
 

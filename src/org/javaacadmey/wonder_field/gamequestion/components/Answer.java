@@ -3,8 +3,8 @@ package org.javaacadmey.wonder_field.gamequestion.components;
 public class Answer {
     private String text;
 
-    public Answer(String answer) {
-        this.text = answer;
+    public Answer(String text) {
+        this.text = text.toUpperCase();
     }
 
     public String getText() {

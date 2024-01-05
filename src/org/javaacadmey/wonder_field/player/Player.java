@@ -10,8 +10,18 @@ public class Player implements SymbolChecker {
     private String city;
     private PlayerAnswer playerAnswer;
 
+    public Player() {
+        this.playerAnswer = new PlayerAnswer("");
+    }
+
+    public Player(String name, String city) {
+        this.name = name;
+        this.city = city;
+        this.playerAnswer = new PlayerAnswer("");
+    }
+
     public PlayerAnswer move() {
-        System.out.printf("Ход игрока %s, город %s", name, city);
+        System.out.printf("Ход игрока %s, город %s\n", name, city);
         while (true) {
             System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
             String command = Game.scanner.nextLine().toLowerCase();
@@ -21,7 +31,7 @@ public class Player implements SymbolChecker {
                     playerAnswer.setTypeAnswer(TypeAnswer.LETTER);
                     playerAnswer.setText(String.valueOf(sayLetter()));
                     return playerAnswer;
-                case "c":
+                case "с":
                     playerAnswer.setTypeAnswer(TypeAnswer.WORD);
                     playerAnswer.setText(sayWord());
                     return playerAnswer;
@@ -37,7 +47,7 @@ public class Player implements SymbolChecker {
 
             if (letter.length() == 1) {
                 if (symbolIsCyrillic(letter.charAt(0))) {
-                    System.out.printf("Игрок %s: буква %s", name, letter);
+                    System.out.printf("Игрок %s: буква %s\n", name, letter);
                     return letter.charAt(0);
                 } else {
                     System.out.println("Введите русскую букву");
@@ -53,7 +63,7 @@ public class Player implements SymbolChecker {
             String word = Game.scanner.nextLine().trim().toUpperCase();
 
             if (!word.isEmpty()) {
-                System.out.printf("Игрок %s: слово %s", name, word);
+                System.out.printf("Игрок %s: слово %s\n", name, word);
                 return word;
             } else {
                 System.out.println("Вы не ввели слово, попробуйте еще раз.");

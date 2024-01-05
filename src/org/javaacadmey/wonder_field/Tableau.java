@@ -17,24 +17,15 @@ public class Tableau {
 
     public void displayTableau() {
         if (attributesNotEmpty()) {
-            System.out.println(String.join(" ", String.valueOf(letters)));
+//            System.out.println(String.valueOf(letters).replace("", " "));
+            for (char letter : letters) {
+                System.out.print(letter + " ");
+            }
+            System.out.println();
         } else {
             System.out.println("атрибуты Tableau пусты");
         }
     }
-
-//    public void reveal(String guess) {
-//        if (attributesNotEmpty()) {
-//            guess = guess.toUpperCase();
-//            if (guess.length() == 1) {
-//                openLetter(guess.charAt(0));
-//            } else {
-//                openWord(guess);
-//            }
-//        } else {
-//            System.out.println("атрибуты Tableau пусты");
-//        }
-//    }
 
     public boolean containsUnknownLetters() {
         for (char letter : letters) {

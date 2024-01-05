@@ -6,9 +6,8 @@ import org.javaacadmey.wonder_field.gamequestion.components.Answer;
 public class PlayerAnswer extends Answer {
     private TypeAnswer typeAnswer;
 
-    public PlayerAnswer(String answer, TypeAnswer typeAnswer) {
-        super(answer);
-        this.typeAnswer = typeAnswer;
+    public PlayerAnswer(String text) {
+        super(text);
     }
 
     public TypeAnswer getTypeAnswer() {
