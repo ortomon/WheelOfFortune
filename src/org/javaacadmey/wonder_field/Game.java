@@ -38,6 +38,7 @@ public class Game {
         playGroupRounds();
         playFinalRound();
         yakubovich.endShow();
+        scanner.close();
     }
 
     private void initGame() {
