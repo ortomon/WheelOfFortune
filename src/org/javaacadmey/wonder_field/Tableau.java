@@ -51,6 +51,6 @@ public class Tableau {
     }
 
     private boolean attributesNotEmpty() {
-        return correctAnswer != null && letters != null;
+        return (correctAnswer != null && !correctAnswer.getText().isEmpty() && letters != null);
     }
 }
