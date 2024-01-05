@@ -137,7 +137,6 @@ public class Game {
         tableau.init(gameQuestion.getAnswer());
         yakubovich.invitePlayers(pullPlayersNames(players), round);
         yakubovich.askQuestion(gameQuestion);
-//        tableau.displayTableau();
 
         while (checkTableau()) {
             for (Player player : players) {
@@ -195,22 +194,3 @@ public class Game {
         return players;
     }
 }
-
-/**
- // Инициализация вопросов и ответов
- private void initQuestionsAndAnswers() {
- gameQuestions = new GameQuestion[NUMBER_ROUNDS];
-
- for (int i = 0; i < NUMBER_ROUNDS; i++) {
- GameQuestion gameQuestion = new GameQuestion();
-
- System.out.println("Введите вопрос #" + (i + 1));
- gameQuestion.setQuestion(scanner.nextLine());
-
- System.out.println("Введите ответ на вопрос #" + (i + 1));
- gameQuestion.setAnswer(scanner.nextLine().toLowerCase());
-
- questions[i] = gameQuestion;
- }
- }
- */
