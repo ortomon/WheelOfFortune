@@ -4,7 +4,7 @@ import org.javaacadmey.wonder_field.Game;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
-public class Player implements SymbolChecker {
+public class Player{
     private String name;
     private String city;
     private PlayerAnswer playerAnswer;
@@ -69,9 +69,8 @@ public class Player implements SymbolChecker {
         }
     }
 
-    @Override
     public boolean symbolIsCyrillic(char letter) {
-        return SymbolChecker.super.symbolIsCyrillic(letter);
+        return SymbolChecker.symbolIsCyrillic(letter);
     }
 
     public String getName() {
