@@ -1,6 +1,7 @@
 package org.javaacadmey.wonder_field.components.player;
 
 import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
@@ -8,6 +9,7 @@ public class Player{
     private String name;
     private String city;
     private PlayerAnswer playerAnswer;
+    private int points;
 
     public Player() {
         this.playerAnswer = new PlayerAnswer("");
@@ -17,6 +19,7 @@ public class Player{
         this.name = name;
         this.city = city;
         this.playerAnswer = new PlayerAnswer("");
+        this.points = 0;
     }
 
     public void move() {
@@ -39,6 +42,17 @@ public class Player{
                 }
             }
         }
+    }
+
+    public String spinDrum(Drum drum) {
+//        String sector = drum.spin();
+//        try {
+//            int pointsDrum = Integer.parseInt(sector);
+//            points += pointsDrum;
+//        } catch (NumberFormatException e) {
+//            points *= 2;
+//        }
+        return drum.spin();
     }
 
     private char sayLetter() {
@@ -91,5 +105,13 @@ public class Player{
 
     public PlayerAnswer getPlayerAnswer() {
         return playerAnswer;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points += points;
     }
 }

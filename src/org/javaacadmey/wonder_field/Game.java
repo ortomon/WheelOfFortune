@@ -1,5 +1,6 @@
 package org.javaacadmey.wonder_field;
 
+import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.Tableau;
 import org.javaacadmey.wonder_field.components.Yakubovich;
 import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
@@ -21,6 +22,7 @@ public class Game {
     private GameQuestion[] gameQuestions;
     private Tableau tableau;
     private Yakubovich yakubovich;
+    private Drum drum;
     private Player[] winners;
     private Player[] players;
 
@@ -30,6 +32,7 @@ public class Game {
         this.tableau = new Tableau();
         this.winners = new Player[NUMBER_GROUP_ROUNDS];
         this.players = new Player[NUMBER_PLAYERS];
+        this.drum = new Drum();
         initGame();
     }
 
@@ -107,12 +110,22 @@ public class Game {
 
     private boolean playerMove(GameQuestion gameQuestion, Player player,  boolean isFinalRound) {
         do {
+            String sector = player.spinDrum(drum);
+            yakubovich.saySector(sector);
             player.move();
             boolean correctGuess = yakubovich.checkPlayerAnswer(
                     player, gameQuestion.getAnswer(),
                     tableau, isFinalRound);
 
             if (correctGuess) {
+
+                try {
+                    int pointsDrum = Integer.parseInt(sector);
+                    player.setPoints(pointsDrum);
+                } catch (NumberFormatException e) {
+                    player.setPoints(player.getPoints() * 2);
+                }
+
                 if (checkTableau()) {
                     tableau.displayTableau();
                 } else {
@@ -140,6 +153,7 @@ public class Game {
 
         while (checkTableau()) {
             for (Player player : players) {
+                yakubovich.saySpinDrum(player);
                 boolean playerWins;
 
                 if (round != FINAL_ROUND_INDEX) {

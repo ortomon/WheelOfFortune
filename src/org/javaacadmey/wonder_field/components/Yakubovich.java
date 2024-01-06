@@ -37,6 +37,14 @@ public class Yakubovich {
         }
     }
 
+    public void saySector(String sector) {
+        try {
+            int pointsDrumSector = Integer.parseInt(sector);
+            System.out.printf("Якубович: %d очков на барабане!\n", pointsDrumSector);
+        } catch (NumberFormatException e) {
+            System.out.printf("Якубович: %s", sector, "Заработанные игроком очки удваиваются, если он назовёт верную букву\n");
+        }
+    }
     private boolean checkPlayerAnswer(String guess, Answer correctAnswer) {
         return correctAnswer.getText().equals(guess);
     }
@@ -58,15 +66,21 @@ public class Yakubovich {
             System.out.println(
                     "Якубович: И перед нами победитель Капитал шоу поле чудес! " +
                     "Это " + playerName + " из " + playerCity);
+//            System.out.printf("У него %d очков.\n", player.getPoints());
         } else {
             System.out.println(
                     "Якубович: Молодец! " +
                     playerName+ " из " + playerCity + " проходит в финал!");
+//            System.out.printf("У него %d очков.\n", player.getPoints());
         }
     }
 
     public void askQuestion(GameQuestion gameQuestion) {
         System.out.println("Якубович: Внимание вопрос! \n" + gameQuestion.getText());
+    }
+
+    public void saySpinDrum(Player player) {
+        System.out.printf("Якубович: %s, крутите барабан!\n", player.getName());
     }
 
     public void startShow() {
@@ -76,8 +90,7 @@ public class Yakubovich {
     }
 
     public void endShow() {
-        System.out.println(
-                "Якубович: Мы прощаемся с вами ровно на одну неделю! Здоровья вам, до встречи!");
+        System.out.println("Якубович: Мы прощаемся с вами ровно на одну неделю! Здоровья вам, до встречи!");
     }
 
     public void invitePlayers(String playersName, int numberOfRound) {
