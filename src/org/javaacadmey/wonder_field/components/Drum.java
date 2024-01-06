@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Drum {
+    public static final String SECTOR_DOUBLING = "Сектор удвоение!";
+    public static final String SECTOR_SKIPPING_MOVE = "Сектор пропуск хода!";
     private final String[] points = new String[14];
 
     public Drum() {
@@ -18,16 +20,12 @@ public class Drum {
 
     private void initPoint() {
         int step = 100;
-        for (int i = 0; i < (points.length - 1); i++) {
+
+        for (int i = 0; i < (points.length - 2); i++) {
             points[i] = String.valueOf(step * i);
         }
-        points[points.length - 1] = "Сектор удвоение!";
-    }
 
-    @Override
-    public String toString() {
-        return "Drum{" +
-                "points=" + Arrays.toString(points) +
-                '}';
+        points[points.length - 1] = SECTOR_DOUBLING;
+        points[points.length - 2] = SECTOR_SKIPPING_MOVE;
     }
 }

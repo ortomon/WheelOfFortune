@@ -8,10 +8,11 @@ import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
 public class Yakubovich {
-    public boolean checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau, boolean isFinalRound) {
+    private static final String SEPARATOR = "__________________________________";
+
+    public boolean checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
         PlayerAnswer playerAnswer = player.getPlayerAnswer();
         String playerAnswerText = player.getPlayerAnswer().getText();
-
 
         if (playerAnswer.getTypeAnswer() == TypeAnswer.LETTER) {
             if (checkPlayerAnswer(playerAnswerText.charAt(0), correctAnswer)) {
@@ -20,18 +21,17 @@ public class Yakubovich {
                 return true;
             } else {
                 System.out.println("Якубович: Нет такой буквы! Следующий игрок, крутите барабан!");
-                printSeparator();
+                System.out.println(SEPARATOR);
                 return false;
             }
         } else {
             if (checkPlayerAnswer(playerAnswerText, correctAnswer)) {
                 tableau.openWord();
                 System.out.println("Якубович: " + playerAnswer.getText() + "! Абсолютно верно!");
-                sayIfPlayerWins(player, isFinalRound);
                 return true;
             } else {
                 System.out.println("Якубович: Неверно! Следующий игрок!");
-                printSeparator();
+                System.out.println(SEPARATOR);
                 return false;
             }
         }
@@ -42,9 +42,15 @@ public class Yakubovich {
             int pointsDrumSector = Integer.parseInt(sector);
             System.out.printf("Якубович: %d очков на барабане!\n", pointsDrumSector);
         } catch (NumberFormatException e) {
-            System.out.printf("Якубович: %s", sector, "Заработанные игроком очки удваиваются, если он назовёт верную букву\n");
+            System.out.printf("Якубович: %s ", sector);
+            if (sector.equals(Drum.SECTOR_DOUBLING)) {
+                System.out.println("Заработанные игроком очки удваиваются, если он назовёт верную букву.");
+            } else {
+                System.out.println("Игрок пропускает ход.");
+            }
         }
     }
+
     private boolean checkPlayerAnswer(String guess, Answer correctAnswer) {
         return correctAnswer.getText().equals(guess);
     }
@@ -58,20 +64,16 @@ public class Yakubovich {
         return false;
     }
 
-    private void sayIfPlayerWins(Player player, boolean isFinalRound) {
+    public void sayIfPlayerWins(Player player, boolean isFinalRound) {
         String playerName = player.getName();
         String playerCity = player.getCity();
 
         if (isFinalRound) {
-            System.out.println(
-                    "Якубович: И перед нами победитель Капитал шоу поле чудес! " +
-                    "Это " + playerName + " из " + playerCity);
-//            System.out.printf("У него %d очков.\n", player.getPoints());
+            System.out.print("Якубович: И перед нами победитель Капитал шоу поле чудес! ");
+            System.out.println("Это " + playerName + " из " + playerCity);
+            System.out.printf("У него %d очков.\n", player.getPoints());
         } else {
-            System.out.println(
-                    "Якубович: Молодец! " +
-                    playerName+ " из " + playerCity + " проходит в финал!");
-//            System.out.printf("У него %d очков.\n", player.getPoints());
+            System.out.println("Якубович: Молодец! " + playerName+ " из " + playerCity + " проходит в финал!");
         }
     }
 
@@ -99,10 +101,6 @@ public class Yakubovich {
         } else {
             System.out.printf("Якубович: приглашаю победителей групповых этапов: %s\n", playersName);
         }
-    }
-
-    private void printSeparator() {
-        System.out.println("__________________________________");
     }
 }
 

@@ -51,13 +51,13 @@ public class Game {
         initTestGameQuestion();
         System.out.println("Иницализация закончена, игра начнется через 5 секунд");
 
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.print("\n".repeat(50));
+//        try {
+//            TimeUnit.SECONDS.sleep(5);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.out.print("\n".repeat(50));
     }
 
     private void initTestPlayers(int round) {
@@ -112,23 +112,27 @@ public class Game {
         do {
             String sector = player.spinDrum(drum);
             yakubovich.saySector(sector);
+
+            if (sector.equals(Drum.SECTOR_SKIPPING_MOVE)) {
+                return false;
+            }
+
             player.move();
-            boolean correctGuess = yakubovich.checkPlayerAnswer(
-                    player, gameQuestion.getAnswer(),
-                    tableau, isFinalRound);
+            boolean correctGuess = yakubovich.checkPlayerAnswer(player, gameQuestion.getAnswer(), tableau);
 
             if (correctGuess) {
-
                 try {
                     int pointsDrum = Integer.parseInt(sector);
                     player.setPoints(pointsDrum);
                 } catch (NumberFormatException e) {
                     player.setPoints(player.getPoints() * 2);
+
                 }
 
                 if (checkTableau()) {
                     tableau.displayTableau();
                 } else {
+                    yakubovich.sayIfPlayerWins(player, isFinalRound);
                     return true;
                 }
             } else {

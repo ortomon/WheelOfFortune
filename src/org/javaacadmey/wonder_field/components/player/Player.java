@@ -45,13 +45,6 @@ public class Player{
     }
 
     public String spinDrum(Drum drum) {
-//        String sector = drum.spin();
-//        try {
-//            int pointsDrum = Integer.parseInt(sector);
-//            points += pointsDrum;
-//        } catch (NumberFormatException e) {
-//            points *= 2;
-//        }
         return drum.spin();
     }
 
