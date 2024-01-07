@@ -126,7 +126,6 @@ public class Game {
                     player.setPoints(pointsDrum);
                 } catch (NumberFormatException e) {
                     player.setPoints(player.getPoints() * 2);
-
                 }
 
                 if (checkTableau()) {
@@ -190,25 +189,5 @@ public class Game {
         } else {
             System.out.println("Нет победителей групповых раундов.");
         }
-    }
-
-    public GameQuestion[] getGameQuestions() {
-        return gameQuestions;
-    }
-
-    public Tableau getTableau() {
-        return tableau;
-    }
-
-    public Yakubovich getYakubovich() {
-        return yakubovich;
-    }
-
-    public Player[] getWinners() {
-        return winners;
-    }
-
-    public Player[] getPlayers() {
-        return players;
     }
 }

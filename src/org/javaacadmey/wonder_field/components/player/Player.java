@@ -5,6 +5,8 @@ import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
+import java.util.Random;
+
 public class Player{
     private String name;
     private String city;
@@ -45,7 +47,9 @@ public class Player{
     }
 
     public String spinDrum(Drum drum) {
-        return drum.spin();
+        Random random = new Random();
+        int randomIndex = random.nextInt(drum.getSectors().length);
+        return drum.getSectors()[randomIndex];
     }
 
     private char sayLetter() {
