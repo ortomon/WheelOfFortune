@@ -11,7 +11,7 @@ public class TestPlayers extends Player {
 
     public static Player[] initPlayers(int round) {
         if (round == 0) {
-            String[] names = {"алина", "оксимирон", "бетмен"};
+            String[] names = {"соня", "оксимирон", "бетмен"};
             String[] locations = {"мск", "спб", "готэм"};
             return initPlayers(names, locations);
         } else if (round == 1) {

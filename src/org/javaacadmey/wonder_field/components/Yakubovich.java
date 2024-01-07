@@ -10,6 +10,29 @@ import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 public class Yakubovich {
     private static final String SEPARATOR = "__________________________________";
 
+    public boolean checkWinnerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
+        PlayerAnswer winnerAnswer = player.getPlayerAnswer();
+        String winnerAnswerText = winnerAnswer.getText();
+
+        if (winnerAnswer.getTypeAnswer() == TypeAnswer.LETTER) {
+            if (checkPlayerAnswer(winnerAnswerText.charAt(0), correctAnswer)) {
+                tableau.openLetter(winnerAnswerText.charAt(0));
+                System.out.println(YakubovichPhrases.CORRECT_LETTER_GUESS.getText());
+                return true;
+            } else {
+                System.out.println(YakubovichPhrases.NO_SUCH_LETTER.getText());
+            }
+        } else {
+            if (checkPlayerAnswer(winnerAnswerText, correctAnswer)) {
+                tableau.openWord();
+                System.out.printf(YakubovichPhrases.CORRECT_WORD_GUESS.getText(), winnerAnswerText);
+            } else {
+                System.out.println(YakubovichPhrases.WRONG_WORD_GUESS.getText());
+            }
+        }
+        return false;
+    }
+
     public boolean checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
         PlayerAnswer playerAnswer = player.getPlayerAnswer();
         String playerAnswerText = playerAnswer.getText();
@@ -27,7 +50,7 @@ public class Yakubovich {
             System.out.println(YakubovichPhrases.CORRECT_LETTER_GUESS.getText());
             return true;
         } else {
-            System.out.println(YakubovichPhrases.NO_SUCH_LETTER + YakubovichPhrases.NEXT_PLAYER.getText());
+            System.out.println(YakubovichPhrases.NO_SUCH_LETTER.getText() + YakubovichPhrases.NEXT_PLAYER.getText());
             System.out.println(SEPARATOR);
             return false;
         }
@@ -110,6 +133,14 @@ public class Yakubovich {
         } else {
             System.out.printf(YakubovichPhrases.INVITE_PLAYERS.getText(), (numberOfRound + 1),  playersName);
         }
+    }
+
+    public void sayWelcomeSuperGame() {
+        System.out.println(YakubovichPhrases.SUPER_GAME.getText());
+    }
+
+    public void sayGuessAnswerSuperGame() {
+        System.out.println(YakubovichPhrases.GUESS_WORD_SUPER_GAME.getText());
     }
 }
 

@@ -38,6 +38,7 @@ public class Player{
     public void takeGift(Gift gift) {
         for (int i = 0; i < MAX_GIFTS; i++) {
             if (gifts[i] == null) {
+                gifts[i] = new Gift();
                 gifts[i] = gift;
                 return;
             } else {
@@ -46,25 +47,11 @@ public class Player{
         }
     }
 
-    public void move() {
-        System.out.printf("Ход игрока %s, город %s\n", name, city);
-
-        while (true) {
-            System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
-            String command = Game.scanner.nextLine().toLowerCase();
-
-            if (symbolIsCyrillic(command.charAt(0))) {
-                switch (command) {
-                    case "б":
-                        setPlayerAnswer(TypeAnswer.LETTER, String.valueOf(sayLetter()));
-                        return;
-                    case "с":
-                        setPlayerAnswer(TypeAnswer.WORD, sayWord());
-                        return;
-                    default:
-                        System.out.println("Некорректное значение, введите 'б' или 'с'.");
-                }
-            }
+    public void move(TypeAnswer anwerType) {
+        if (anwerType == TypeAnswer.LETTER) {
+            setPlayerAnswer(TypeAnswer.LETTER, String.valueOf(sayLetter()));
+        } else {
+            setPlayerAnswer(TypeAnswer.WORD, sayWord());
         }
     }
 
@@ -151,5 +138,9 @@ public class Player{
 
     public void setGiftMoney(int giftMoney) {
         this.giftMoney = giftMoney;
+    }
+
+    public Gift[] getGifts() {
+        return gifts;
     }
 }

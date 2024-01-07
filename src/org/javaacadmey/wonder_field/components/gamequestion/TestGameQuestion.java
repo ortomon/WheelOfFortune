@@ -16,7 +16,7 @@ public class TestGameQuestion extends GameQuestion {
         return gameQuestions;
     }
 
-    public static GameQuestion initSperGameQuestion() {
-        return new GameQuestion("Вопрос?", new Answer("ответ"));
-    }
+//    public static GameQuestion initSperGameQuestion() {
+//        return new GameQuestion("Вопрос?", new Answer("ответ"));
+//    }
 }

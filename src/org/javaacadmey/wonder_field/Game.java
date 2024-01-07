@@ -5,12 +5,15 @@ import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
 import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
 import org.javaacadmey.wonder_field.components.player.Player;
 import org.javaacadmey.wonder_field.components.gamequestion.TestGameQuestion;
+import org.javaacadmey.wonder_field.components.player.SymbolChecker;
 import org.javaacadmey.wonder_field.components.player.TestPlayers;
+import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Game {
+public class Game extends SymbolChecker {
     public static final int NUMBER_PLAYERS = 3;
     public static final int NUMBER_ROUNDS = 5;
     public static final int NUMBER_GROUP_ROUNDS = 3;
@@ -20,7 +23,6 @@ public class Game {
     public static final Scanner scanner = new Scanner(System.in);
 
     private GameQuestion[] gameQuestions;
-    private GameQuestion superGameQuestion;
     private Tableau tableau;
     private Yakubovich yakubovich;
     private Drum drum;
@@ -37,8 +39,6 @@ public class Game {
         this.yakubovich = new Yakubovich();
         this.tableau = new Tableau();
         this.drum = new Drum();
-        this.winner = new Player();
-
         initGame();
     }
 
@@ -46,6 +46,9 @@ public class Game {
         yakubovich.startShow();
         playGroupRounds();
         playFinalRound();
+        chooseGift();
+        offerPlaySuperGame();
+
         yakubovich.endShow();
         scanner.close();
     }
@@ -108,11 +111,10 @@ public class Game {
 
     private void initTestGameQuestion() {
         gameQuestions = TestGameQuestion.initGameQuestion();
-        superGameQuestion = TestGameQuestion.initSperGameQuestion();
     }
 
     private void initGameQuestion() {
-        for (int i = 0; i < gameQuestions.length; i++) {
+        for (int i = 0; i < FINAL_ROUND_INDEX; i++) {
             System.out.println("Введите вопрос #" + (i + 1));
             String question = scanner.nextLine();
 
@@ -128,11 +130,33 @@ public class Game {
         System.out.println("Введите ответ на вопрос супер игры:");
         Answer answer = new Answer(scanner.nextLine().toUpperCase());
 
-        superGameQuestion = new GameQuestion(question, answer);
+        gameQuestions[SUPER_GAME_ROUND_INDEX] = new GameQuestion(question, answer);
     }
 
     private boolean checkTableau() {
         return tableau.containsUnknownLetters();
+    }
+
+    private void playerMove(Player player) {
+        System.out.printf("Ход игрока %s, город %s\n", player.getName(), player.getCity());
+
+        while (true) {
+            System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
+            String command = Game.scanner.nextLine().toLowerCase();
+
+            if (symbolIsCyrillic(command.charAt(0))) {
+                switch (command) {
+                    case "б":
+                        player.move(TypeAnswer.LETTER);
+                        return;
+                    case "с":
+                        player.move(TypeAnswer.WORD);
+                        return;
+                    default:
+                        System.out.println("Некорректное значение, введите 'б' или 'с'.");
+                }
+            }
+        }
     }
 
     private boolean playerMove(GameQuestion gameQuestion, Player player, boolean isFinalRound) {
@@ -142,7 +166,7 @@ public class Game {
             String sector = player.spinDrum(drum);
             yakubovich.saySector(sector);
 
-            player.move();
+            playerMove(player);
 
             boolean correctGuess = yakubovich.checkPlayerAnswer(player, gameQuestion.getAnswer(), tableau);
 
@@ -184,7 +208,6 @@ public class Game {
                     System.out.println("Некорректное значение, введите 1 или 2.");
             }
         }
-
     }
 
     private void playerGetsPoints(Player player, String sector) {
@@ -207,11 +230,7 @@ public class Game {
     }
 
     private GameQuestion getQuestionForRound(int round) {
-        if (round != FINAL_ROUND_INDEX) {
-            return gameQuestions[round];
-        } else {
-            return gameQuestions[FINAL_ROUND_INDEX];
-        }
+        return gameQuestions[round];
     }
 
     private void playRound(int round, Player[] players) {
@@ -262,10 +281,41 @@ public class Game {
 
     private void playSuperGame() {
         if (winner != null) {
-            playRound();
+            GameQuestion gameQuestion = getQuestionForRound(SUPER_GAME_ROUND_INDEX);
+            tableau.init(gameQuestion.getAnswer());
+            yakubovich.sayWelcomeSuperGame();
+
+            yakubovich.askQuestion(gameQuestion);
+            winnerGuessLetter(gameQuestion);
+
+            yakubovich.sayGuessAnswerSuperGame();
+            winnerGuessWord(gameQuestion);
+
         } else {
             System.out.println("Нет победителя.");
         }
+    }
+
+    private void winnerGuessLetter(GameQuestion gameQuestion) {
+        System.out.println("Введите букву.");
+        int trying = 1;
+
+        while (trying < 4) {
+            System.out.println("Попытка №" + trying);
+            winner.move(TypeAnswer.LETTER);
+            boolean correctmove = yakubovich.checkWinnerAnswer(winner, gameQuestion.getAnswer(), tableau);
+
+            if (correctmove) {
+                tableau.displayTableau();
+            }
+
+            trying++;
+        }
+    }
+
+    private void winnerGuessWord(GameQuestion gameQuestion) {
+        winner.move(TypeAnswer.WORD);
+        yakubovich.checkWinnerAnswer(winner, gameQuestion.getAnswer(), tableau);
     }
 
     private void offerPlaySuperGame() {
@@ -275,10 +325,10 @@ public class Game {
 
         switch (command) {
             case "да":
-
+                playSuperGame();
                 return;
             case "нет":
-
+                System.out.println("игрок уходит с такими вещами " + Arrays.toString(winner.getGifts()));
                 return;
             default:
                 System.out.println("Некорректное значение, введите 'да' или 'нет'");

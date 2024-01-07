@@ -9,6 +9,9 @@ public class Gift {
         this.cost = cost;
     }
 
+    public Gift() {
+    }
+
     public String getName() {
         return name;
     }

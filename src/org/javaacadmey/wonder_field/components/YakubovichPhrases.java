@@ -26,7 +26,11 @@ public enum YakubovichPhrases {
     YAKUBOVICH("Якубович: "),
     DRUM_SECTOR_WITH_POINT("Якубович: %d очков на барабане!\n"),
     DRUM_SECTOR_DOUBLING(" Заработанные игроком очки удваиваются, если он назовёт верную букву."),
-    DRUM_SECTOR_SKIP_MOVE(" Игрок пропускает ход.");
+    DRUM_SECTOR_SKIP_MOVE(" Игрок пропускает ход."),
+
+    SUPER_GAME("Якубович: Добро пожаловать в супер игру! Вы можете назвать 3 буквы, а затем попробовать угадать слово."),
+    GUESS_WORD_SUPER_GAME("Якубович: а теперь угадайте слово!");
+
 
     private final String text;
 
