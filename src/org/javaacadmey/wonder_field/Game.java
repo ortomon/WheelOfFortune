@@ -1,9 +1,6 @@
 package org.javaacadmey.wonder_field;
 
-import org.javaacadmey.wonder_field.components.BoxWithMoney;
-import org.javaacadmey.wonder_field.components.Drum;
-import org.javaacadmey.wonder_field.components.Tableau;
-import org.javaacadmey.wonder_field.components.Yakubovich;
+import org.javaacadmey.wonder_field.components.*;
 import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
 import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
 import org.javaacadmey.wonder_field.components.player.Player;
@@ -15,28 +12,32 @@ import java.util.Scanner;
 
 public class Game {
     public static final int NUMBER_PLAYERS = 3;
-    public static final int NUMBER_ROUNDS = 4;
+    public static final int NUMBER_ROUNDS = 5;
     public static final int NUMBER_GROUP_ROUNDS = 3;
     public static final int FINAL_ROUND_INDEX = 3;
+    public static final int SUPER_GAME_ROUND_INDEX = 4;
     private static final int NUMBER_BOXES_WITH_MONEY = 2;
     public static final Scanner scanner = new Scanner(System.in);
 
     private GameQuestion[] gameQuestions;
+    private GameQuestion superGameQuestion;
     private Tableau tableau;
     private Yakubovich yakubovich;
     private Drum drum;
-    private Player[] winners;
+    private Player[] groupRoundswinners;
     private Player[] players;
+    private Player winner;
     private BoxWithMoney[] boxWithMoney;
 
     public Game() {
         this.gameQuestions = new GameQuestion[NUMBER_ROUNDS];
-        this.winners = new Player[NUMBER_GROUP_ROUNDS];
+        this.groupRoundswinners = new Player[NUMBER_GROUP_ROUNDS];
         this.players = new Player[NUMBER_PLAYERS];
         this.boxWithMoney = new BoxWithMoney[NUMBER_BOXES_WITH_MONEY];
         this.yakubovich = new Yakubovich();
         this.tableau = new Tableau();
         this.drum = new Drum();
+        this.winner = new Player();
 
         initGame();
     }
@@ -49,7 +50,7 @@ public class Game {
         scanner.close();
     }
 
-    public void initBoxesWithMoney() {
+    private void initBoxesWithMoney() {
         Random random = new Random();
 
         int randomIndex = random.nextInt(0, NUMBER_BOXES_WITH_MONEY);
@@ -107,6 +108,7 @@ public class Game {
 
     private void initTestGameQuestion() {
         gameQuestions = TestGameQuestion.initGameQuestion();
+        superGameQuestion = TestGameQuestion.initSperGameQuestion();
     }
 
     private void initGameQuestion() {
@@ -119,6 +121,14 @@ public class Game {
 
             gameQuestions[i] = new GameQuestion(question, answer);
         }
+
+        System.out.println("Введите вопрос для супер игры:");
+        String question = scanner.nextLine();
+
+        System.out.println("Введите ответ на вопрос супер игры:");
+        Answer answer = new Answer(scanner.nextLine().toUpperCase());
+
+        superGameQuestion = new GameQuestion(question, answer);
     }
 
     private boolean checkTableau() {
@@ -218,12 +228,13 @@ public class Game {
                 if (round != FINAL_ROUND_INDEX) {
                     playerWins = playerMove(gameQuestion, player, false);
                     if (playerWins) {
-                        winners[round] = player;
+                        groupRoundswinners[round] = player;
                         return;
                     }
                 } else {
                     playerWins = playerMove(gameQuestion, player, true);
                     if (playerWins) {
+                        winner = player;
                         return;
                     }
                 }
@@ -242,10 +253,54 @@ public class Game {
     }
 
     private void playFinalRound() {
-        if (winners != null && winners.length > 0) {
-            playRound(FINAL_ROUND_INDEX, winners);
+        if (groupRoundswinners != null && groupRoundswinners.length > 0) {
+            playRound(FINAL_ROUND_INDEX, groupRoundswinners);
         } else {
             System.out.println("Нет победителей групповых раундов.");
+        }
+    }
+
+    private void playSuperGame() {
+        if (winner != null) {
+            playRound();
+        } else {
+            System.out.println("Нет победителя.");
+        }
+    }
+
+    private void offerPlaySuperGame() {
+        chooseGift();
+        System.out.println("Хотите сыграть в супер игру?");
+        String command = Game.scanner.nextLine().toLowerCase();
+
+        switch (command) {
+            case "да":
+
+                return;
+            case "нет":
+
+                return;
+            default:
+                System.out.println("Некорректное значение, введите 'да' или 'нет'");
+        }
+    }
+
+    private void chooseGift() {
+        while (true) {
+            System.out.println("Напишите выбранный подарок из каталога:");
+            String choose = winner.chooseGift();
+            PointGift chooseGift = PointGift.getByGiftName(choose);
+
+            if (chooseGift == null) {
+                System.out.println("Такого подарка нет, выберите подарок из каталога и напишите его название еще раз:");
+            } else {
+                if (winner.getPoints() >= chooseGift.getGift().getCost()) {
+                    winner.takeGift(chooseGift.getGift());
+                    return;
+                } else {
+                    System.out.println("У вас не хватает баллов, выберите что-нибудь другое.");
+                }
+            }
         }
     }
 

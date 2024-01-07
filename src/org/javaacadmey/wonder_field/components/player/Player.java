@@ -1,6 +1,7 @@
 package org.javaacadmey.wonder_field.components.player;
 
 import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.Gift;
 import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
@@ -8,11 +9,14 @@ import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 import java.util.Random;
 
 public class Player{
+    private static final int MAX_GIFTS = 100;
+
     private String name;
     private String city;
     private PlayerAnswer playerAnswer;
     private int points;
     private int giftMoney;
+    private Gift[] gifts;
 
     public Player() {
         this.playerAnswer = new PlayerAnswer("");
@@ -24,6 +28,22 @@ public class Player{
         this.playerAnswer = new PlayerAnswer("");
         this.points = 0;
         this.giftMoney = 0;
+        this.gifts = new Gift[MAX_GIFTS];
+    }
+
+    public String chooseGift() {
+        return Game.scanner.nextLine().toLowerCase();
+    }
+
+    public void takeGift(Gift gift) {
+        for (int i = 0; i < MAX_GIFTS; i++) {
+            if (gifts[i] == null) {
+                gifts[i] = gift;
+                return;
+            } else {
+                System.out.println("Упс! Не хватает рук унести все подарки!");
+            }
+        }
     }
 
     public void move() {
