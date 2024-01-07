@@ -9,7 +9,6 @@ import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
 public class Yakubovich {
     private static final String SEPARATOR = "__________________________________";
-    private static final String YAKUBOVICH = "Якубович:";
 
     public boolean checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
         PlayerAnswer playerAnswer = player.getPlayerAnswer();
@@ -25,10 +24,10 @@ public class Yakubovich {
     private boolean checkPlayerAnswer(char guess, Answer correctAnswer, Tableau tableau) {
         if (checkPlayerAnswer(guess, correctAnswer)) {
             tableau.openLetter(guess);
-            System.out.println(YAKUBOVICH + " Есть такая буква, откройте ее!");
+            System.out.println(YakubovichPhrases.CORRECT_LETTER_GUESS.getText());
             return true;
         } else {
-            System.out.println(YAKUBOVICH + " Нет такой буквы! Следующий игрок.");
+            System.out.println(YakubovichPhrases.NO_SUCH_LETTER + YakubovichPhrases.NEXT_PLAYER.getText());
             System.out.println(SEPARATOR);
             return false;
         }
@@ -37,10 +36,10 @@ public class Yakubovich {
     private boolean checkPlayerAnswer(String guess, Answer correctAnswer, Tableau tableau) {
         if (checkPlayerAnswer(guess, correctAnswer)) {
             tableau.openWord();
-            System.out.printf("%s %s! Абсолютно верно!\n", YAKUBOVICH, guess);
+            System.out.printf(YakubovichPhrases.CORRECT_WORD_GUESS.getText(), guess);
             return true;
         } else {
-            System.out.println(YAKUBOVICH + " Неверно! Следующий игрок!");
+            System.out.println(YakubovichPhrases.WRONG_WORD_GUESS.getText() + YakubovichPhrases.NEXT_PLAYER.getText());
             System.out.println(SEPARATOR);
             return false;
         }
@@ -57,16 +56,24 @@ public class Yakubovich {
     public void saySector(String sector) {
         try {
             int pointsDrumSector = Integer.parseInt(sector);
-            System.out.printf("%s %d очков на барабане!\n", YAKUBOVICH, pointsDrumSector);
+            System.out.printf(YakubovichPhrases.DRUM_SECTOR_WITH_POINT.getText(), pointsDrumSector);
         } catch (NumberFormatException e) {
-            System.out.print(YAKUBOVICH + sector);
+            System.out.print(YakubovichPhrases.YAKUBOVICH.getText() + sector);
 
             if (sector.equals(Drum.SECTOR_DOUBLING)) {
-                System.out.println(" Заработанные игроком очки удваиваются, если он назовёт верную букву.");
+                System.out.println(YakubovichPhrases.DRUM_SECTOR_DOUBLING.getText());
             } else {
-                System.out.println(" Игрок пропускает ход.");
+                System.out.println(YakubovichPhrases.DRUM_SECTOR_SKIP_MOVE.getText());
             }
         }
+    }
+
+    public void sayBoxesWithMoney() {
+        System.out.println(YakubovichPhrases.BOX_WITH_MONEY_CHANCE.getText());
+    }
+
+    public void sayHowManyMoneyInBox(BoxWithMoney boxWithMoney) {
+        System.out.printf(YakubovichPhrases.HOW_MANY_MONEY_IN_BOX.getText(), boxWithMoney.getMoney());
     }
 
     public void sayIfPlayerWins(Player player, boolean isFinalRound) {
@@ -75,37 +82,33 @@ public class Yakubovich {
         int playerPoints = player.getPoints();
 
         if (isFinalRound) {
-            System.out.print(YAKUBOVICH + " И перед нами победитель Капитал шоу поле чудес! ");
-            System.out.printf("Это %s из %s.\n", playerName, playerCity);
-            System.out.printf("Он набрал %d очков.\n", playerPoints);
+            System.out.printf(YakubovichPhrases.PLAYER_WINS_FINAL_ROUND.getText(), playerName, playerCity, playerPoints);
         } else {
-            System.out.printf("%s Молодец! %s из %s проходит в финал!\n", YAKUBOVICH, playerName, playerCity);
+            System.out.printf(YakubovichPhrases.PLAYER_WINS_GROUP_ROUND.getText(), playerName, playerCity);
         }
     }
 
     public void askQuestion(GameQuestion gameQuestion) {
-        System.out.printf("%s Внимание вопрос! %s\n", YAKUBOVICH, gameQuestion.getText());
+        System.out.printf(YakubovichPhrases.ASK_QUESTION.getText(), gameQuestion.getText());
     }
 
     public void saySpinDrum(Player player) {
-        System.out.printf("%s %s, крутите барабан!\n", YAKUBOVICH, player.getName());
+        System.out.printf(YakubovichPhrases.SPIN_DRUM.getText(), player.getName());
     }
 
     public void startShow() {
-        System.out.print(YAKUBOVICH + " Здравствуйте, уважаемые дамы и господа! ");
-        System.out.println("Пятница! В эфире капитал-шоу «Поле чудес»!");
+        System.out.println(YakubovichPhrases.START_SHOW.getText());
     }
 
     public void endShow() {
-        System.out.print(YAKUBOVICH + " Мы прощаемся с вами ровно на одну неделю! ");
-        System.out.println("Здоровья вам, до встречи!");
+        System.out.println(YakubovichPhrases.END_SHOW.getText());
     }
 
     public void invitePlayers(String playersName, int numberOfRound) {
-        if (numberOfRound != Game.FINAL_ROUND_INDEX) {
-            System.out.printf("%s приглашаю %d тройку игроков: %s\n", YAKUBOVICH, (numberOfRound + 1),  playersName);
+        if (numberOfRound == Game.FINAL_ROUND_INDEX) {
+            System.out.printf(YakubovichPhrases.INVITE_WINNERS.getText(), playersName);
         } else {
-            System.out.printf("%s приглашаю победителей групповых этапов: %s\n", YAKUBOVICH, playersName);
+            System.out.printf(YakubovichPhrases.INVITE_PLAYERS.getText(), (numberOfRound + 1),  playersName);
         }
     }
 }

@@ -12,6 +12,7 @@ public class Player{
     private String city;
     private PlayerAnswer playerAnswer;
     private int points;
+    private int giftMoney;
 
     public Player() {
         this.playerAnswer = new PlayerAnswer("");
@@ -22,6 +23,7 @@ public class Player{
         this.city = city;
         this.playerAnswer = new PlayerAnswer("");
         this.points = 0;
+        this.giftMoney = 0;
     }
 
     public void move() {
@@ -53,8 +55,14 @@ public class Player{
 
     public String spinDrum(Drum drum) {
         Random random = new Random();
-        int randomIndex = random.nextInt(drum.getSectors().length);
+        int randomIndex = random.nextInt(Drum.NUMBER_SECTORS_FOR_GAME);
         return drum.getSectors()[randomIndex];
+    }
+
+    public int chooseBoxWithMoney() {
+        int choose = Game.scanner.nextInt();
+        Game.scanner.nextLine();
+        return choose;
     }
 
     private char sayLetter() {
@@ -115,5 +123,13 @@ public class Player{
 
     public void setPoints(int points) {
         this.points += points;
+    }
+
+    public int getGiftMoney() {
+        return giftMoney;
+    }
+
+    public void setGiftMoney(int giftMoney) {
+        this.giftMoney = giftMoney;
     }
 }
