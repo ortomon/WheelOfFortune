@@ -1,4 +1,4 @@
-package org.javaacadmey.wonder_field;
+package org.javaacadmey.wonder_field.components.gift;
 
 public class Gift {
     private String name;
@@ -26,5 +26,12 @@ public class Gift {
 
     public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    @Override
+    public String toString() {
+        return "Gift{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

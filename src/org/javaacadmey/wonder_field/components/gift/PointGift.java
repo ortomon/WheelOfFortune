@@ -1,6 +1,4 @@
-package org.javaacadmey.wonder_field.components;
-
-import org.javaacadmey.wonder_field.Gift;
+package org.javaacadmey.wonder_field.components.gift;
 
 public enum PointGift {
     LASER_POINTER(new Gift("лазер", 100)),
@@ -29,6 +27,10 @@ public enum PointGift {
             }
         }
         return null;
+    }
+
+    public static int cheapestPointGift() {
+        return LASER_POINTER.gift.getCost();
     }
 
     public Gift getGift() {

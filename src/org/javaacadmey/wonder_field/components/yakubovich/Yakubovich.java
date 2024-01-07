@@ -1,6 +1,9 @@
-package org.javaacadmey.wonder_field.components;
+package org.javaacadmey.wonder_field.components.yakubovich;
 
 import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.components.BoxWithMoney;
+import org.javaacadmey.wonder_field.components.Drum;
+import org.javaacadmey.wonder_field.components.Tableau;
 import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
 import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
 import org.javaacadmey.wonder_field.components.player.Player;

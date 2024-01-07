@@ -1,15 +1,16 @@
 package org.javaacadmey.wonder_field.components.player;
 
 import org.javaacadmey.wonder_field.Game;
-import org.javaacadmey.wonder_field.Gift;
+import org.javaacadmey.wonder_field.components.SymbolChecker;
+import org.javaacadmey.wonder_field.components.gift.Gift;
 import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
 import java.util.Random;
 
-public class Player{
-    private static final int MAX_GIFTS = 100;
+public class Player {
+    private static final int MAX_GIFTS = 15;
 
     private String name;
     private String city;
@@ -31,20 +32,14 @@ public class Player{
         this.gifts = new Gift[MAX_GIFTS];
     }
 
-    public String chooseGift() {
-        return Game.scanner.nextLine().toLowerCase();
-    }
-
     public void takeGift(Gift gift) {
         for (int i = 0; i < MAX_GIFTS; i++) {
             if (gifts[i] == null) {
-                gifts[i] = new Gift();
                 gifts[i] = gift;
                 return;
-            } else {
-                System.out.println("Упс! Не хватает рук унести все подарки!");
             }
         }
+        System.out.println("Упс! Не хватает рук унести все подарки!");
     }
 
     public void move(TypeAnswer anwerType) {
@@ -77,7 +72,7 @@ public class Player{
             String letter = Game.scanner.nextLine().trim().toUpperCase();
 
             if (letter.length() == 1) {
-                if (symbolIsCyrillic(letter.charAt(0))) {
+                if (SymbolChecker.symbolIsCyrillic(letter.charAt(0))) {
                     System.out.printf("Игрок %s: буква %s\n", name, letter);
                     return letter.charAt(0);
                 }
@@ -98,10 +93,6 @@ public class Player{
                 System.out.println("Вы не ввели слово, попробуйте еще раз.");
             }
         }
-    }
-
-    public boolean symbolIsCyrillic(char letter) {
-        return SymbolChecker.symbolIsCyrillic(letter);
     }
 
     public String getName() {
@@ -129,7 +120,9 @@ public class Player{
     }
 
     public void setPoints(int points) {
-        this.points += points;
+        if ((this.points + points) >= 0) {
+            this.points += points;
+        }
     }
 
     public int getGiftMoney() {

@@ -1,4 +1,4 @@
-package org.javaacadmey.wonder_field.components.player;
+package org.javaacadmey.wonder_field.components;
 
 public class SymbolChecker {
     public static boolean symbolIsCyrillic(char letter) {

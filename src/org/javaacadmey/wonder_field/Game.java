@@ -3,17 +3,19 @@ package org.javaacadmey.wonder_field;
 import org.javaacadmey.wonder_field.components.*;
 import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
 import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
+import org.javaacadmey.wonder_field.components.gift.PointGift;
 import org.javaacadmey.wonder_field.components.player.Player;
 import org.javaacadmey.wonder_field.components.gamequestion.TestGameQuestion;
-import org.javaacadmey.wonder_field.components.player.SymbolChecker;
+import org.javaacadmey.wonder_field.components.SymbolChecker;
 import org.javaacadmey.wonder_field.components.player.TestPlayers;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
+import org.javaacadmey.wonder_field.components.yakubovich.Yakubovich;
 
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Game extends SymbolChecker {
+public class Game {
     public static final int NUMBER_PLAYERS = 3;
     public static final int NUMBER_ROUNDS = 5;
     public static final int NUMBER_GROUP_ROUNDS = 3;
@@ -48,7 +50,6 @@ public class Game extends SymbolChecker {
         playFinalRound();
         chooseGift();
         offerPlaySuperGame();
-
         yakubovich.endShow();
         scanner.close();
     }
@@ -144,7 +145,7 @@ public class Game extends SymbolChecker {
             System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
             String command = Game.scanner.nextLine().toLowerCase();
 
-            if (symbolIsCyrillic(command.charAt(0))) {
+            if (SymbolChecker.symbolIsCyrillic(command.charAt(0))) {
                 switch (command) {
                     case "б":
                         player.move(TypeAnswer.LETTER);
@@ -319,7 +320,6 @@ public class Game extends SymbolChecker {
     }
 
     private void offerPlaySuperGame() {
-        chooseGift();
         System.out.println("Хотите сыграть в супер игру?");
         String command = Game.scanner.nextLine().toLowerCase();
 
@@ -336,9 +336,9 @@ public class Game extends SymbolChecker {
     }
 
     private void chooseGift() {
-        while (true) {
+        while (winner.getPoints() >= PointGift.cheapestPointGift()) {
             System.out.println("Напишите выбранный подарок из каталога:");
-            String choose = winner.chooseGift();
+            String choose = scanner.nextLine().toLowerCase();
             PointGift chooseGift = PointGift.getByGiftName(choose);
 
             if (chooseGift == null) {
@@ -346,15 +346,17 @@ public class Game extends SymbolChecker {
             } else {
                 if (winner.getPoints() >= chooseGift.getGift().getCost()) {
                     winner.takeGift(chooseGift.getGift());
-                    return;
+                    winner.setPoints(-chooseGift.getGift().getCost());
+
+                    if (winner.getPoints() >= PointGift.cheapestPointGift()) {
+                        System.out.println("У вас осталось " + winner.getPoints() + " баллов. Выберите еще один подарок!");
+                    } else {
+                        System.out.println("Пользуйтесь своими подарками на здоровье!");
+                    }
                 } else {
                     System.out.println("У вас не хватает баллов, выберите что-нибудь другое.");
                 }
             }
         }
-    }
-
-    public BoxWithMoney[] getBoxWithMoney() {
-        return boxWithMoney;
     }
 }

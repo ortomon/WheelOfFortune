@@ -1,4 +1,4 @@
-package org.javaacadmey.wonder_field.components;
+package org.javaacadmey.wonder_field.components.yakubovich;
 
 public enum YakubovichPhrases {
     START_SHOW("Якубович: Здравствуйте, уважаемые дамы и господа! Пятница! В эфире капитал-шоу «Поле чудес»!"),
