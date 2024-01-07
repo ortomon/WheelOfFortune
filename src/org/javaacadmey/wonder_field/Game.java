@@ -10,7 +10,6 @@ import org.javaacadmey.wonder_field.components.gamequestion.TestGameQuestion;
 import org.javaacadmey.wonder_field.components.player.TestPlayers;
 
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 public class Game {
     public static final int NUMBER_PLAYERS = 3;
@@ -65,7 +64,7 @@ public class Game {
     }
 
     private Player[] initPlayers() {
-        for (int i = 0; i < players.length; i++) {
+        for (int i = 0; i < NUMBER_PLAYERS; i++) {
             Player player = new Player();
             System.out.println("Игрок №" + (i + 1) + " представьтесь: как вас зовут?");
             player.setName(scanner.nextLine());
@@ -79,9 +78,9 @@ public class Game {
     private String pullPlayersNames(Player[] players) {
         StringBuilder names = new StringBuilder();
 
-        for (int i = 0; i < players.length; i++) {
+        for (int i = 0; i < NUMBER_PLAYERS; i++) {
             names.append(players[i].getName());
-            if (i < players.length - 1) {
+            if (i < NUMBER_PLAYERS - 1) {
                 names.append(", ");
             }
         }
@@ -108,36 +107,43 @@ public class Game {
         return tableau.containsUnknownLetters();
     }
 
-    private boolean playerMove(GameQuestion gameQuestion, Player player,  boolean isFinalRound) {
-        do {
+    private boolean playerMove(GameQuestion gameQuestion, Player player, boolean isFinalRound) {
+        while (true) {
             String sector = player.spinDrum(drum);
             yakubovich.saySector(sector);
-
-            if (sector.equals(Drum.SECTOR_SKIPPING_MOVE)) {
-                return false;
-            }
 
             player.move();
             boolean correctGuess = yakubovich.checkPlayerAnswer(player, gameQuestion.getAnswer(), tableau);
 
-            if (correctGuess) {
-                try {
-                    int pointsDrum = Integer.parseInt(sector);
-                    player.setPoints(pointsDrum);
-                } catch (NumberFormatException e) {
-                    player.setPoints(player.getPoints() * 2);
-                }
+            if (sector.equals(Drum.SECTOR_SKIPPING_MOVE) || !correctGuess) {
+                return false;
+            } else {
+                playerGetsPoints(player, sector);
 
-                if (checkTableau()) {
-                    tableau.displayTableau();
-                } else {
-                    yakubovich.sayIfPlayerWins(player, isFinalRound);
+                if (!playerContinuesMove(player, isFinalRound)) {
                     return true;
                 }
-            } else {
-                return false;
             }
-        } while (true);
+        }
+    }
+
+    private void playerGetsPoints(Player player, String sector) {
+        try {
+            int pointsDrum = Integer.parseInt(sector);
+            player.setPoints(pointsDrum);
+        } catch (NumberFormatException e) {
+            player.setPoints(player.getPoints() * 2);
+        }
+    }
+
+    private boolean playerContinuesMove(Player player, boolean isFinalRound) {
+        if (checkTableau()) {
+            tableau.displayTableau();
+            return true;
+        } else {
+            yakubovich.sayIfPlayerWins(player, isFinalRound);
+            return false;
+        }
     }
 
     private GameQuestion getQuestionForRound(int round) {
@@ -166,8 +172,10 @@ public class Game {
                         return;
                     }
                 } else {
-                    playerMove(gameQuestion, player, true);
-                    return;
+                    playerWins = playerMove(gameQuestion, player, true);
+                    if (playerWins) {
+                        return;
+                    }
                 }
             }
         }

@@ -26,24 +26,29 @@ public class Player{
 
     public void move() {
         System.out.printf("Ход игрока %s, город %s\n", name, city);
+
         while (true) {
             System.out.println("Если хотите букву нажмите 'б' и enter, если хотите слово нажмите 'c' и enter");
             String command = Game.scanner.nextLine().toLowerCase();
+
             if (symbolIsCyrillic(command.charAt(0))) {
                 switch (command) {
                     case "б":
-                        playerAnswer.setTypeAnswer(TypeAnswer.LETTER);
-                        playerAnswer.setText(String.valueOf(sayLetter()));
+                        setPlayerAnswer(TypeAnswer.LETTER, String.valueOf(sayLetter()));
                         return;
                     case "с":
-                        playerAnswer.setTypeAnswer(TypeAnswer.WORD);
-                        playerAnswer.setText(sayWord());
+                        setPlayerAnswer(TypeAnswer.WORD, sayWord());
                         return;
                     default:
                         System.out.println("Некорректное значение, введите 'б' или 'с'.");
                 }
             }
         }
+    }
+
+    private void setPlayerAnswer(TypeAnswer typeAnswer, String text) {
+        playerAnswer.setTypeAnswer(typeAnswer);
+        playerAnswer.setText(text);
     }
 
     public String spinDrum(Drum drum) {
