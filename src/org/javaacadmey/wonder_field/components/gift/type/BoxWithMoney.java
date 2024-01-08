@@ -1,9 +1,12 @@
-package org.javaacadmey.wonder_field.components;
+package org.javaacadmey.wonder_field.components.gift.type;
 
-public class BoxWithMoney {
+import org.javaacadmey.wonder_field.components.gift.Gift;
+
+public class BoxWithMoney extends Gift {
     private int money;
 
     public BoxWithMoney(int money) {
+        super("шкатулка с деньгами");
         this.money = money;
     }
 

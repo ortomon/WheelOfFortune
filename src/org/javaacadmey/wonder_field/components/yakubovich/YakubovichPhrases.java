@@ -31,7 +31,6 @@ public enum YakubovichPhrases {
     SUPER_GAME("Якубович: Добро пожаловать в супер игру! Вы можете назвать 3 буквы, а затем попробовать угадать слово."),
     GUESS_WORD_SUPER_GAME("Якубович: а теперь угадайте слово!");
 
-
     private final String text;
 
     YakubovichPhrases(String text) {

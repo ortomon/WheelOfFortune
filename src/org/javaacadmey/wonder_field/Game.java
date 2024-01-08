@@ -3,7 +3,10 @@ package org.javaacadmey.wonder_field;
 import org.javaacadmey.wonder_field.components.*;
 import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
 import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
-import org.javaacadmey.wonder_field.components.gift.PointGift;
+import org.javaacadmey.wonder_field.components.gift.type.BoxWithMoney;
+import org.javaacadmey.wonder_field.components.gift.Gift;
+import org.javaacadmey.wonder_field.components.gift.PointGifts;
+import org.javaacadmey.wonder_field.components.gift.SuperGifts;
 import org.javaacadmey.wonder_field.components.player.Player;
 import org.javaacadmey.wonder_field.components.gamequestion.TestGameQuestion;
 import org.javaacadmey.wonder_field.components.SymbolChecker;
@@ -11,7 +14,6 @@ import org.javaacadmey.wonder_field.components.player.TestPlayers;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 import org.javaacadmey.wonder_field.components.yakubovich.Yakubovich;
 
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -28,16 +30,16 @@ public class Game {
     private Tableau tableau;
     private Yakubovich yakubovich;
     private Drum drum;
-    private Player[] groupRoundswinners;
+    private Player[] groupRoundsWinners;
     private Player[] players;
     private Player winner;
-    private BoxWithMoney[] boxWithMoney;
+    private BoxWithMoney[] boxesWithMoney;
 
     public Game() {
         this.gameQuestions = new GameQuestion[NUMBER_ROUNDS];
-        this.groupRoundswinners = new Player[NUMBER_GROUP_ROUNDS];
+        this.groupRoundsWinners = new Player[NUMBER_GROUP_ROUNDS];
         this.players = new Player[NUMBER_PLAYERS];
-        this.boxWithMoney = new BoxWithMoney[NUMBER_BOXES_WITH_MONEY];
+        this.boxesWithMoney = new BoxWithMoney[NUMBER_BOXES_WITH_MONEY];
         this.yakubovich = new Yakubovich();
         this.tableau = new Tableau();
         this.drum = new Drum();
@@ -48,7 +50,7 @@ public class Game {
         yakubovich.startShow();
         playGroupRounds();
         playFinalRound();
-        chooseGift();
+        winnerChooseGift();
         offerPlaySuperGame();
         yakubovich.endShow();
         scanner.close();
@@ -60,10 +62,10 @@ public class Game {
         int randomIndex = random.nextInt(0, NUMBER_BOXES_WITH_MONEY);
         int step = 1000;
         int minValue = 1000;
-        int randomValueGreaterZero = minValue + step * random.nextInt(0, 10);
+        int randomValueGreaterZero = minValue + step * random.nextInt(0, 100);
 
-        boxWithMoney[randomIndex] = new BoxWithMoney(0);
-        boxWithMoney[NUMBER_BOXES_WITH_MONEY - 1 - randomIndex] = new BoxWithMoney(randomValueGreaterZero);
+        boxesWithMoney[randomIndex] = new BoxWithMoney(0);
+        boxesWithMoney[NUMBER_BOXES_WITH_MONEY - 1 - randomIndex] = new BoxWithMoney(randomValueGreaterZero);
     }
 
     private void initGame() {
@@ -167,11 +169,15 @@ public class Game {
             String sector = player.spinDrum(drum);
             yakubovich.saySector(sector);
 
+            if (sector.equals(Drum.SECTOR_SKIPPING_MOVE)) {
+                return false;
+            }
+
             playerMove(player);
 
             boolean correctGuess = yakubovich.checkPlayerAnswer(player, gameQuestion.getAnswer(), tableau);
 
-            if (sector.equals(Drum.SECTOR_SKIPPING_MOVE) || !correctGuess) {
+            if (!correctGuess) {
                 return false;
             } else {
                 if (countMove % 3 == 0) {
@@ -198,12 +204,12 @@ public class Game {
 
             switch (command) {
                 case 1:
-                    yakubovich.sayHowManyMoneyInBox(boxWithMoney[0]);
-                    player.setGiftMoney(boxWithMoney[0].getMoney());
+                    yakubovich.sayHowManyMoneyInBox(boxesWithMoney[0]);
+                    player.takeGift(boxesWithMoney[0]);
                     return;
                 case 2:
-                    yakubovich.sayHowManyMoneyInBox(boxWithMoney[1]);
-                    player.setGiftMoney(boxWithMoney[1].getMoney());
+                    yakubovich.sayHowManyMoneyInBox(boxesWithMoney[1]);
+                    player.takeGift(boxesWithMoney[1]);
                     return;
                 default:
                     System.out.println("Некорректное значение, введите 1 или 2.");
@@ -248,7 +254,7 @@ public class Game {
                 if (round != FINAL_ROUND_INDEX) {
                     playerWins = playerMove(gameQuestion, player, false);
                     if (playerWins) {
-                        groupRoundswinners[round] = player;
+                        groupRoundsWinners[round] = player;
                         return;
                     }
                 } else {
@@ -273,90 +279,81 @@ public class Game {
     }
 
     private void playFinalRound() {
-        if (groupRoundswinners != null && groupRoundswinners.length > 0) {
-            playRound(FINAL_ROUND_INDEX, groupRoundswinners);
+        if (groupRoundsWinners != null && groupRoundsWinners.length > 0) {
+            playRound(FINAL_ROUND_INDEX, groupRoundsWinners);
         } else {
             System.out.println("Нет победителей групповых раундов.");
         }
     }
 
-    private void playSuperGame() {
-        if (winner != null) {
-            GameQuestion gameQuestion = getQuestionForRound(SUPER_GAME_ROUND_INDEX);
-            tableau.init(gameQuestion.getAnswer());
-            yakubovich.sayWelcomeSuperGame();
-
-            yakubovich.askQuestion(gameQuestion);
-            winnerGuessLetter(gameQuestion);
-
-            yakubovich.sayGuessAnswerSuperGame();
-            winnerGuessWord(gameQuestion);
-
-        } else {
-            System.out.println("Нет победителя.");
-        }
-    }
-
-    private void winnerGuessLetter(GameQuestion gameQuestion) {
-        System.out.println("Введите букву.");
-        int trying = 1;
-
-        while (trying < 4) {
-            System.out.println("Попытка №" + trying);
-            winner.move(TypeAnswer.LETTER);
-            boolean correctmove = yakubovich.checkWinnerAnswer(winner, gameQuestion.getAnswer(), tableau);
-
-            if (correctmove) {
-                tableau.displayTableau();
-            }
-
-            trying++;
-        }
-    }
-
-    private void winnerGuessWord(GameQuestion gameQuestion) {
-        winner.move(TypeAnswer.WORD);
-        yakubovich.checkWinnerAnswer(winner, gameQuestion.getAnswer(), tableau);
-    }
-
-    private void offerPlaySuperGame() {
-        System.out.println("Хотите сыграть в супер игру?");
-        String command = Game.scanner.nextLine().toLowerCase();
-
-        switch (command) {
-            case "да":
-                playSuperGame();
-                return;
-            case "нет":
-                System.out.println("игрок уходит с такими вещами " + Arrays.toString(winner.getGifts()));
-                return;
-            default:
-                System.out.println("Некорректное значение, введите 'да' или 'нет'");
-        }
-    }
-
-    private void chooseGift() {
-        while (winner.getPoints() >= PointGift.cheapestPointGift()) {
+    private void winnerChooseGift() {
+        while (winner.getPoints() >= PointGifts.cheapestPointGift()) {
             System.out.println("Напишите выбранный подарок из каталога:");
             String choose = scanner.nextLine().toLowerCase();
-            PointGift chooseGift = PointGift.getByGiftName(choose);
+            PointGifts choosePointGift = PointGifts.getByGiftName(choose);
 
-            if (chooseGift == null) {
+            if (choosePointGift == null) {
                 System.out.println("Такого подарка нет, выберите подарок из каталога и напишите его название еще раз:");
             } else {
-                if (winner.getPoints() >= chooseGift.getGift().getCost()) {
-                    winner.takeGift(chooseGift.getGift());
-                    winner.setPoints(-chooseGift.getGift().getCost());
+                if (winner.getPoints() >= choosePointGift.getPointGift().getCost()) {
+                    winner.takeGift(choosePointGift.getPointGift());
+                    winner.setPoints(-choosePointGift.getPointGift().getCost());
 
-                    if (winner.getPoints() >= PointGift.cheapestPointGift()) {
+                    if (winner.getPoints() >= PointGifts.cheapestPointGift()) {
                         System.out.println("У вас осталось " + winner.getPoints() + " баллов. Выберите еще один подарок!");
                     } else {
                         System.out.println("Пользуйтесь своими подарками на здоровье!");
+                        return;
                     }
                 } else {
                     System.out.println("У вас не хватает баллов, выберите что-нибудь другое.");
                 }
             }
         }
+    }
+
+    private void offerPlaySuperGame() {
+        System.out.println("Хотите сыграть в супер игру?");
+        Gift superGift = SuperGifts.getRandomSuperGift().getGift();
+        boolean playSuperGame = true;
+
+        while (playSuperGame) {
+            String command = Game.scanner.nextLine().toLowerCase();
+
+            switch (command) {
+                case "да":
+                    boolean isVictory = playSuperGame();
+
+                    if (isVictory) {
+                        winner.takeGift(superGift);
+                    }
+
+                    printWinnerGiftInfo();
+                    return;
+                case "нет":
+                    System.out.println("якубови: а секреный подарок был " + superGift);
+                    printWinnerGiftInfo();
+                    return;
+                default:
+                    System.out.println("Некорректное значение, введите 'да' или 'нет'");
+            }
+            playSuperGame = false;
+        }
+    }
+
+    private boolean playSuperGame() {
+        GameQuestion superGameQuestion = getQuestionForRound(SUPER_GAME_ROUND_INDEX);
+
+        if (winner != null) {
+            return SuperGame.play(superGameQuestion, winner, yakubovich, tableau);
+        } else {
+            System.out.println("Нет победителя.");
+        }
+        return false;
+    }
+
+    private void printWinnerGiftInfo() {
+        System.out.print("игрок уходит с такими вещам: ");
+        winner.printGifts();
     }
 }

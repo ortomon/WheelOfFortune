@@ -1,7 +1,7 @@
 package org.javaacadmey.wonder_field.components.yakubovich;
 
 import org.javaacadmey.wonder_field.Game;
-import org.javaacadmey.wonder_field.components.BoxWithMoney;
+import org.javaacadmey.wonder_field.components.gift.type.BoxWithMoney;
 import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.Tableau;
 import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
@@ -10,7 +10,7 @@ import org.javaacadmey.wonder_field.components.player.Player;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 
-public class Yakubovich {
+public final class Yakubovich {
     private static final String SEPARATOR = "__________________________________";
 
     public boolean checkWinnerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
@@ -29,6 +29,7 @@ public class Yakubovich {
             if (checkPlayerAnswer(winnerAnswerText, correctAnswer)) {
                 tableau.openWord();
                 System.out.printf(YakubovichPhrases.CORRECT_WORD_GUESS.getText(), winnerAnswerText);
+                return true;
             } else {
                 System.out.println(YakubovichPhrases.WRONG_WORD_GUESS.getText());
             }

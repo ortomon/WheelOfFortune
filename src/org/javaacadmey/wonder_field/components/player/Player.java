@@ -11,24 +11,23 @@ import java.util.Random;
 
 public class Player {
     private static final int MAX_GIFTS = 15;
+    private static final int MIN_POINTS = 0;
 
     private String name;
     private String city;
     private PlayerAnswer playerAnswer;
     private int points;
-    private int giftMoney;
     private Gift[] gifts;
 
     public Player() {
-        this.playerAnswer = new PlayerAnswer("");
+        this("", "");
     }
 
     public Player(String name, String city) {
         this.name = name;
         this.city = city;
         this.playerAnswer = new PlayerAnswer("");
-        this.points = 0;
-        this.giftMoney = 0;
+        this.points = MIN_POINTS;
         this.gifts = new Gift[MAX_GIFTS];
     }
 
@@ -42,8 +41,17 @@ public class Player {
         System.out.println("Упс! Не хватает рук унести все подарки!");
     }
 
-    public void move(TypeAnswer anwerType) {
-        if (anwerType == TypeAnswer.LETTER) {
+    public void printGifts() {
+        for (Gift gift : gifts) {
+            if (gift != null) {
+                System.out.print(gift + ", ");
+            }
+        }
+        System.out.println();
+    }
+
+    public void move(TypeAnswer answerType) {
+        if (answerType == TypeAnswer.LETTER) {
             setPlayerAnswer(TypeAnswer.LETTER, String.valueOf(sayLetter()));
         } else {
             setPlayerAnswer(TypeAnswer.WORD, sayWord());
@@ -120,17 +128,9 @@ public class Player {
     }
 
     public void setPoints(int points) {
-        if ((this.points + points) >= 0) {
+        if ((this.points + points) >= MIN_POINTS) {
             this.points += points;
         }
-    }
-
-    public int getGiftMoney() {
-        return giftMoney;
-    }
-
-    public void setGiftMoney(int giftMoney) {
-        this.giftMoney = giftMoney;
     }
 
     public Gift[] getGifts() {
