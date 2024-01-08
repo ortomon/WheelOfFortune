@@ -29,7 +29,8 @@ public enum YakubovichPhrases {
     DRUM_SECTOR_SKIP_MOVE(" Игрок пропускает ход."),
 
     SUPER_GAME("Якубович: Добро пожаловать в супер игру! Вы можете назвать 3 буквы, а затем попробовать угадать слово."),
-    GUESS_WORD_SUPER_GAME("Якубович: а теперь угадайте слово!");
+    GUESS_WORD_SUPER_GAME("Якубович: а теперь угадайте слово!"),
+    SUPER_GIFT("Якубович: откройте супер приз: ");
 
     private final String text;
 

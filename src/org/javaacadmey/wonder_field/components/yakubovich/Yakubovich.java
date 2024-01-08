@@ -1,11 +1,12 @@
 package org.javaacadmey.wonder_field.components.yakubovich;
 
-import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.logic.Game;
 import org.javaacadmey.wonder_field.components.gift.type.BoxWithMoney;
 import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.Tableau;
 import org.javaacadmey.wonder_field.components.gamequestion.GameQuestion;
 import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
+import org.javaacadmey.wonder_field.components.gift.type.Gift;
 import org.javaacadmey.wonder_field.components.player.Player;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
@@ -13,7 +14,7 @@ import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;
 public final class Yakubovich {
     private static final String SEPARATOR = "__________________________________";
 
-    public boolean checkWinnerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
+    public static boolean checkWinnerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
         PlayerAnswer winnerAnswer = player.getPlayerAnswer();
         String winnerAnswerText = winnerAnswer.getText();
 
@@ -37,7 +38,7 @@ public final class Yakubovich {
         return false;
     }
 
-    public boolean checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
+    public static boolean checkPlayerAnswer(Player player, Answer correctAnswer, Tableau tableau) {
         PlayerAnswer playerAnswer = player.getPlayerAnswer();
         String playerAnswerText = playerAnswer.getText();
 
@@ -48,7 +49,7 @@ public final class Yakubovich {
         }
     }
 
-    private boolean checkPlayerAnswer(char guess, Answer correctAnswer, Tableau tableau) {
+    private static boolean checkPlayerAnswer(char guess, Answer correctAnswer, Tableau tableau) {
         if (checkPlayerAnswer(guess, correctAnswer)) {
             tableau.openLetter(guess);
             System.out.println(YakubovichPhrases.CORRECT_LETTER_GUESS.getText());
@@ -60,7 +61,7 @@ public final class Yakubovich {
         }
     }
 
-    private boolean checkPlayerAnswer(String guess, Answer correctAnswer, Tableau tableau) {
+    private static boolean checkPlayerAnswer(String guess, Answer correctAnswer, Tableau tableau) {
         if (checkPlayerAnswer(guess, correctAnswer)) {
             tableau.openWord();
             System.out.printf(YakubovichPhrases.CORRECT_WORD_GUESS.getText(), guess);
@@ -72,15 +73,15 @@ public final class Yakubovich {
         }
     }
 
-    private boolean checkPlayerAnswer(String guess, Answer correctAnswer) {
+    private static boolean checkPlayerAnswer(String guess, Answer correctAnswer) {
         return correctAnswer.getText().equals(guess);
     }
 
-    private boolean checkPlayerAnswer(char guess, Answer correctAnswer) {
+    private static boolean checkPlayerAnswer(char guess, Answer correctAnswer) {
         return correctAnswer.getText().contains(String.valueOf(guess));
     }
 
-    public void saySector(String sector) {
+    public static void saySector(String sector) {
         try {
             int pointsDrumSector = Integer.parseInt(sector);
             System.out.printf(YakubovichPhrases.DRUM_SECTOR_WITH_POINT.getText(), pointsDrumSector);
@@ -95,15 +96,15 @@ public final class Yakubovich {
         }
     }
 
-    public void sayBoxesWithMoney() {
+    public static void sayBoxesWithMoney() {
         System.out.println(YakubovichPhrases.BOX_WITH_MONEY_CHANCE.getText());
     }
 
-    public void sayHowManyMoneyInBox(BoxWithMoney boxWithMoney) {
+    public static void sayHowManyMoneyInBox(BoxWithMoney boxWithMoney) {
         System.out.printf(YakubovichPhrases.HOW_MANY_MONEY_IN_BOX.getText(), boxWithMoney.getMoney());
     }
 
-    public void sayIfPlayerWins(Player player, boolean isFinalRound) {
+    public static void sayIfPlayerWins(Player player, boolean isFinalRound) {
         String playerName = player.getName();
         String playerCity = player.getCity();
         int playerPoints = player.getPoints();
@@ -115,36 +116,40 @@ public final class Yakubovich {
         }
     }
 
-    public void askQuestion(GameQuestion gameQuestion) {
+    public static void askQuestion(GameQuestion gameQuestion) {
         System.out.printf(YakubovichPhrases.ASK_QUESTION.getText(), gameQuestion.getText());
     }
 
-    public void saySpinDrum(Player player) {
+    public static void saySpinDrum(Player player) {
         System.out.printf(YakubovichPhrases.SPIN_DRUM.getText(), player.getName());
     }
 
-    public void startShow() {
+    public static void startShow() {
         System.out.println(YakubovichPhrases.START_SHOW.getText());
     }
 
-    public void endShow() {
+    public static void endShow() {
         System.out.println(YakubovichPhrases.END_SHOW.getText());
     }
 
-    public void invitePlayers(String playersName, int numberOfRound) {
-        if (numberOfRound == Game.FINAL_ROUND_INDEX) {
+    public static void invitePlayers(String playersName, int numberOfRound) {
+        if (numberOfRound == Game.FINAL_GROUP_ROUND_INDEX) {
             System.out.printf(YakubovichPhrases.INVITE_WINNERS.getText(), playersName);
         } else {
             System.out.printf(YakubovichPhrases.INVITE_PLAYERS.getText(), (numberOfRound + 1),  playersName);
         }
     }
 
-    public void sayWelcomeSuperGame() {
+    public static void sayWelcomeSuperGame() {
         System.out.println(YakubovichPhrases.SUPER_GAME.getText());
     }
 
-    public void sayGuessAnswerSuperGame() {
+    public static void sayGuessAnswerSuperGame() {
         System.out.println(YakubovichPhrases.GUESS_WORD_SUPER_GAME.getText());
+    }
+
+    public static void saySuperGift(Gift gift) {
+        System.out.println(YakubovichPhrases.SUPER_GIFT + gift.getName());
     }
 }
 

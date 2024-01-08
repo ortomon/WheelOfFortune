@@ -1,7 +1,5 @@
 package org.javaacadmey.wonder_field.components.gift.type;
 
-import org.javaacadmey.wonder_field.components.gift.Gift;
-
 public class PointGift extends Gift {
     private int cost;
 

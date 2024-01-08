@@ -1,4 +1,4 @@
-package org.javaacadmey.wonder_field.components.gift;
+package org.javaacadmey.wonder_field.components.gift.type;
 
 public class Gift {
     private String name;

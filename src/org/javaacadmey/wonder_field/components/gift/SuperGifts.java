@@ -1,6 +1,6 @@
 package org.javaacadmey.wonder_field.components.gift;
 
-import org.javaacadmey.wonder_field.components.Drum;
+import org.javaacadmey.wonder_field.components.gift.type.Gift;
 
 import java.util.Random;
 

@@ -1,8 +1,8 @@
 package org.javaacadmey.wonder_field.components.player;
 
-import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.logic.Game;
 import org.javaacadmey.wonder_field.components.SymbolChecker;
-import org.javaacadmey.wonder_field.components.gift.Gift;
+import org.javaacadmey.wonder_field.components.gift.type.Gift;
 import org.javaacadmey.wonder_field.components.Drum;
 import org.javaacadmey.wonder_field.components.player.answer.PlayerAnswer;
 import org.javaacadmey.wonder_field.components.player.answer.TypeAnswer;

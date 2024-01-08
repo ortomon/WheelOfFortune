@@ -1,6 +1,6 @@
 package org.javaacadmey.wonder_field.components.gamequestion;
 
-import org.javaacadmey.wonder_field.Game;
+import org.javaacadmey.wonder_field.logic.Game;
 import org.javaacadmey.wonder_field.components.gamequestion.components.Answer;
 
 public class TestGameQuestion extends GameQuestion {
