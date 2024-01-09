@@ -13,11 +13,12 @@ public class Player {
     private static final int MAX_GIFTS = 15;
     private static final int MIN_POINTS = 0;
 
+    private PlayerAnswer playerAnswer = new PlayerAnswer("");
+    private int points = MIN_POINTS;
+    private Gift[] gifts = new Gift[MAX_GIFTS];
     private String name;
     private String city;
-    private PlayerAnswer playerAnswer;
-    private int points;
-    private Gift[] gifts;
+
 
     public Player() {
         this("", "");
@@ -26,9 +27,6 @@ public class Player {
     public Player(String name, String city) {
         this.name = name;
         this.city = city;
-        this.playerAnswer = new PlayerAnswer("");
-        this.points = MIN_POINTS;
-        this.gifts = new Gift[MAX_GIFTS];
     }
 
     public void takeGift(Gift gift) {

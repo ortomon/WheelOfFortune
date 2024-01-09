@@ -21,18 +21,13 @@ public class Game {
     public static final int SUPER_GAME_ROUND_INDEX = 4;
     public static final Scanner scanner = new Scanner(System.in);
 
-    private GameQuestion[] gameQuestions;
-    private Tableau tableau;
-    private Player[] groupRoundsWinners;
-    private Player[] players;
+    private GameQuestion[] gameQuestions = new GameQuestion[NUMBER_ROUNDS];
+    private Tableau tableau = new Tableau();
+    private Player[] groupRoundsWinners = new Player[NUMBER_GROUP_ROUNDS];
+    private Player[] players = new Player[NUMBER_PLAYERS];
     private Player winner;
 
-
     public Game() {
-        this.gameQuestions = new GameQuestion[NUMBER_ROUNDS];
-        this.groupRoundsWinners = new Player[NUMBER_GROUP_ROUNDS];
-        this.players = new Player[NUMBER_PLAYERS];
-        this.tableau = new Tableau();
         initGame();
     }
 
